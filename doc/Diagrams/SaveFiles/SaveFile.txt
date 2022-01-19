@@ -10,8 +10,8 @@ Example save file
    "date":"$DD.MM.YYYY-HH:MM:SS",
    "custom_name":"",
    "data":{
-      "player_data":"$player.ToJsonSave()",
-      "world_data":"$world.ToJsonSave()",
+      "player_data":"$player.toJsonSave()",
+      "world_data":"$world.toJsonSave()",
       "etc":"etc"
    }
 }
