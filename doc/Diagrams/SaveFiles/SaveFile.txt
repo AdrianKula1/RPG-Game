@@ -1,0 +1,17 @@
+Jeśli custom name nie jest ustawiony to save przyjmuje nazwę daty i godziny. 
+
+Cokolwiek jest zapisywane do pliku, generowane jest przez obiekt który zawiera dane do zapisu. Dany obiekt musi też wczytywać dane do niego podane.
+
+Jeśli napotkamy strukturę danych, która nie jest obsługiwana w json ( np. data, vector3 itp ), definiujemy jej zapis na końcu pliku SaveFileDataStructureDefinitions.txt grupując je złożonością. Sposób zapisu daty jest już zdefiniowany w tym pliku.
+
+Example save file
+> DD.MM.YYYY-HH:MM:SS.save 
+{
+   "date":"$DD.MM.YYYY-HH:MM:SS",
+   "custom_name":"",
+   "data":{
+      "player_data":"$player.ToJsonSave()",
+      "world_data":"$world.ToJsonSave()",
+      "etc":"etc"
+   }
+}
