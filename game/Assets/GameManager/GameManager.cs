@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static int getLayerNumber(string layerName)
+    public static int GetLayerNumber(string layerName)
     {
         int layerNumber = 0;
         int layer = LayerMask.GetMask(layerName);

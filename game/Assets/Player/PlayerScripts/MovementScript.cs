@@ -4,27 +4,38 @@ using UnityEngine;
 
 public class MovementScript : MonoBehaviour
 {
-    //Transform playerTransform;
-    private float speed = 4f;
-    private float stamina = 100f;
-    private bool dashCooldown = false;
 
+    private Player player;
+    private Rigidbody2D rigidBody;
+    private Vector3 moveDir;
+    private float speed;//= 6f;
+    private bool isDash = false;
+    private bool isSprint = false;
+    private bool dashCooldown = false;
+    private float stamina = 100f;
+
+    //dashowe zmienne
     private float lastClickedTimeW;
     private float lastClickedTimeS;
     private float lastClickedTimeA;
     private float lastClickedTimeD;
 
-    //private void Start()
-    //{
-        
-    //}
+    private void Awake()
+    {
+        player = GetComponent<Player>();
+        rigidBody = GetComponent<Rigidbody2D>();
+        moveDir = Vector3.zero;
+    }
 
     void Update()
     {
+        if (stamina < 100f)
+            stamina += 0.01f;
 
+        float moveY = 0f;
+        float moveX = 0f;
         bool sprint = false;
         bool dash = false;
-        Vector3 direction = Vector3.zero;
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
@@ -33,7 +44,7 @@ public class MovementScript : MonoBehaviour
 
         if (Input.GetKey(KeyCode.W))
         {
-            direction += Vector3.up;
+            moveY = 1f;
         }
 
         if (Input.GetKeyDown(KeyCode.W))
@@ -46,7 +57,7 @@ public class MovementScript : MonoBehaviour
 
         if (Input.GetKey(KeyCode.S))
         {
-            direction += Vector3.down;
+            moveY = -1f;
         }
 
         if (Input.GetKeyDown(KeyCode.S))
@@ -59,7 +70,7 @@ public class MovementScript : MonoBehaviour
 
         if (Input.GetKey(KeyCode.A))
         {
-            direction += Vector3.left;
+            moveX = -1f;
         }
 
         if (Input.GetKeyDown(KeyCode.A))
@@ -72,7 +83,7 @@ public class MovementScript : MonoBehaviour
 
         if (Input.GetKey(KeyCode.D))
         {
-            direction += Vector3.right;
+            moveX = 1f;
         }
 
         if (Input.GetKeyDown(KeyCode.D))
@@ -83,87 +94,74 @@ public class MovementScript : MonoBehaviour
                 dash = true;
         }
 
-        if (direction != Vector3.zero)
-            Move(direction, sprint, dash);
-
-        if (stamina < 100f)
-            stamina += 0.01f;
-        else
-            stamina = 100f;
+        Move(new Vector3(moveX, moveY).normalized, sprint, dash);
     }
 
-    public void Move(Vector3 direction, bool sprint, bool dash)
+    private void Move(Vector3 direction, bool sprint, bool dash)
     {
-        float finalSpeed = speed;
+        moveDir = direction;
 
-        if (sprint && stamina > 0f)
+        if (dash && !dashCooldown && stamina >= 30f)
         {
-            finalSpeed = speed * 2;
+            isDash = true;
+        }
+        else if (sprint && stamina >= 0)
+        {
+            speed = 12f;
+            isSprint = true;
+        }
+        else
+        {
+            speed = 6f;
         }
 
-        if (dash && !dashCooldown && stamina > 30f)
-        {
-            finalSpeed = 600f;
-        }
+    }
+    private void FixedUpdate()
+    {
+        rigidBody.velocity = moveDir * speed;
 
-        if (TryMove(direction, finalSpeed * Time.deltaTime))
+        if (moveDir != Vector3.zero)
         {
-            if (sprint)
+            if (isSprint)
             {
-                stamina -= 0.05f;
+                stamina -= 0.6f;
+                isSprint = false;
             }
 
-            if (dash)
+
+            if (isDash)
             {
+                float dashVelocity = 3f;
+                Vector3 dashPosition = transform.position + moveDir * dashVelocity;
+                RaycastHit2D raycast = Physics2D.Raycast(transform.position, moveDir, dashVelocity, LayerMask.GetMask("Obstacle"));
+                if (raycast.collider != null)
+                {
+                    dashPosition = raycast.point;
+                }
+
+                rigidBody.MovePosition(dashPosition);
                 stamina -= 30f;
                 StartCoroutine(DashCoolDown());
+                isDash = false;
             }
         }
     }
 
-    private bool CanMove(Vector3 direction, float distance)
-    {
-        return Physics2D.Raycast(Player.getInstance().transform.position, direction, distance, Player.getLayerNumber("Obstacle")).collider == null;
-    }
-
-    private bool TryMove(Vector3 baseMoveDirection, float distance)
-    {
-        Vector3 moveDirection = baseMoveDirection;
-        bool canMove = CanMove(moveDirection, distance);
-        if (!canMove)
-        {
-            moveDirection = new Vector3(baseMoveDirection.x, 0f).normalized;
-            canMove = moveDirection.x != 0f && CanMove(moveDirection, distance);
-            if (!canMove)
-            {
-                moveDirection = new Vector3(0f, baseMoveDirection.y).normalized;
-                canMove = moveDirection.y != 0f && CanMove(moveDirection, distance);
-            }
-        }
-
-        if (canMove)
-        {
-            Player.getInstance().transform.position += moveDirection * distance;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    IEnumerator DashCoolDown()
+    private IEnumerator DashCoolDown()
     {
         dashCooldown = true;
+        player.SetImmunity(dashCooldown);
         yield return new WaitForSeconds(3f);
         dashCooldown = false;
+        player.SetImmunity(dashCooldown);
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == Player.getLayerNumber("Spiketrap"))
+        if (collision.gameObject.layer == GameManager.GetLayerNumber("Spiketrap"))
         {
-            Player.getInstance().TakeDamage(0.1f);
+            player.TakeDamage(0.1f);
         }
+
     }
 }
