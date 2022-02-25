@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private float health = 100f;
     private bool immunity = false;
+    public Dictionary<string, PlayerStatistic> statistics;
     
 
-    private void Awake()
+    private void Start()
     {
+        statistics = new Dictionary<string, PlayerStatistic>();
+        statistics.Add("Health", new PlayerStatistic("Health", 1, 100f));
+        statistics.Add("Stamina", new PlayerStatistic("Stamina", 1, 100f));
+        statistics.Add("Mana", new PlayerStatistic("Mana", 1, 100f));
     }
 
     public void SetImmunity(bool immunityCondition)
@@ -20,9 +24,13 @@ public class Player : MonoBehaviour
     public void TakeDamage(float damageValue)
     {
         if (!immunity)
+        {
+            float health = statistics["Health"].GetValue();
             health -= damageValue;
+            statistics["Health"].SetValue(health);
+        }
 
-        if (health <= 0)
+        if (statistics["Health"].GetValue() <= 0)
             Die();
     }
 

@@ -12,7 +12,7 @@ public class MovementScript : MonoBehaviour
     private bool isDash = false;
     private bool isSprint = false;
     private bool dashCooldown = false;
-    private float stamina = 100f;
+    //private float stamina = 100f;
 
     //dashowe zmienne
     private float lastClickedTimeW;
@@ -20,7 +20,7 @@ public class MovementScript : MonoBehaviour
     private float lastClickedTimeA;
     private float lastClickedTimeD;
 
-    private void Awake()
+    private void Start()
     {
         player = GetComponent<Player>();
         rigidBody = GetComponent<Rigidbody2D>();
@@ -29,8 +29,12 @@ public class MovementScript : MonoBehaviour
 
     void Update()
     {
+        float stamina = player.statistics["Stamina"].GetValue();
         if (stamina < 100f)
+        {
             stamina += 0.01f;
+            player.statistics["Stamina"].SetValue(stamina);
+        }
 
         float moveY = 0f;
         float moveX = 0f;
@@ -100,7 +104,7 @@ public class MovementScript : MonoBehaviour
     private void Move(Vector3 direction, bool sprint, bool dash)
     {
         moveDir = direction;
-
+        float stamina = player.statistics["Stamina"].GetValue();
         if (dash && !dashCooldown && stamina >= 30f)
         {
             isDash = true;
@@ -119,7 +123,7 @@ public class MovementScript : MonoBehaviour
     private void FixedUpdate()
     {
         rigidBody.velocity = moveDir * speed;
-
+        float stamina = player.statistics["Stamina"].GetValue();
         if (moveDir != Vector3.zero)
         {
             if (isSprint)
@@ -145,6 +149,7 @@ public class MovementScript : MonoBehaviour
                 isDash = false;
             }
         }
+        player.statistics["Stamina"].SetValue(stamina);
     }
 
     private IEnumerator DashCoolDown()
