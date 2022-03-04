@@ -4,7 +4,7 @@ This is a team project made on University of Marie Curie-Skłodowska. The projec
 
 
 
-Unity version used: **2020.3.26f1**
+Unity version used: **2020.3.30f1**
 
 **Installation requirements:**
 - Microsoft Visual Studio Community 2019
