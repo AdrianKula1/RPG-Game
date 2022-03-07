@@ -20,6 +20,8 @@ public class MovementScript : MonoBehaviour
     private float lastClickedTimeA;
     private float lastClickedTimeD;
 
+    //Wyeliminowanie bugu wielu postaci po za³adowaniu sceny
+    private GameObject[] players;
     private void Start()
     {
         player = GetComponent<Player>();
@@ -168,5 +170,15 @@ public class MovementScript : MonoBehaviour
             player.TakeDamage(0.1f);
         }
 
+    }
+    //Ustawienie pozycji bohatera po za³adowaniu nowej sceny
+    private void OnLevelWasLoaded(int level)
+    {
+        transform.position = GameObject.FindWithTag("StartPos").transform.position;
+        players = GameObject.FindGameObjectsWithTag("Player");
+        if(players.Length > 1)
+        {
+            Destroy(players[1]);
+        }
     }
 }

@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        DontDestroyOnLoad(gameObject);
         statistics = new Dictionary<string, PlayerStatistic>();
         statistics.Add("Health", new PlayerStatistic("Health", 1, 100f));
         statistics.Add("Stamina", new PlayerStatistic("Stamina", 1, 100f));

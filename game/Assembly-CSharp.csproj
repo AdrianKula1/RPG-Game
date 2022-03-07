@@ -58,12 +58,12 @@
   <ItemGroup>
     <Compile Include="Assets\Player\Statistics\Stat.cs" />
     <Compile Include="Assets\Player\Statistics\PlayerStatistic.cs" />
+    <Compile Include="Assets\MapObjects\ILocation.cs" />
     <Compile Include="Assets\GameManager\GameManager.cs" />
     <Compile Include="Assets\Player\PlayerScripts\Player.cs" />
+    <Compile Include="Assets\MapObjects\LocationLoader.cs" />
     <Compile Include="Assets\Player\PlayerScripts\MovementScript.cs" />
     <Compile Include="Assets\Scripts\TestScripts.cs" />
-    <Compile Include="Assets\MapObjects\LocationLoader.cs" />
-    <Compile Include="Assets\MapObjects\ILocation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
