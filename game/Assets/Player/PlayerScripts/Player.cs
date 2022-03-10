@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     private bool immunity = false;
     public Dictionary<string, PlayerStatistic> statistics;
     
-
+    //Inicjuje statystyki gracza
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
@@ -21,7 +21,8 @@ public class Player : MonoBehaviour
     {
         immunity = immunityCondition;
     }
-
+    //Otrzymywanie obra¿eñ, immunity ma dzia³aæ jak cooldown tak¿e
+    //¯eby nie otrzymaæ 1000 uderzeñ w jednej sekundzie gdy przeciwnik zaatakuje
     public void TakeDamage(float damageValue)
     {
         if (!immunity)
@@ -29,6 +30,7 @@ public class Player : MonoBehaviour
             float health = statistics["Health"].GetValue();
             health -= damageValue;
             statistics["Health"].SetValue(health);
+            StartCoroutine(TakeDamageCooldown());
         }
 
         if (statistics["Health"].GetValue() <= 0)
@@ -38,5 +40,12 @@ public class Player : MonoBehaviour
     private void Die()
     {
         Debug.Log("Player died");
+    }
+
+    public IEnumerator TakeDamageCooldown()
+    {
+        immunity = true;
+        yield return new WaitForSeconds(1f);
+        immunity = false;
     }
 }

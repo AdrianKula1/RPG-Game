@@ -28,7 +28,8 @@ public class MovementScript : MonoBehaviour
         rigidBody = GetComponent<Rigidbody2D>();
         moveDir = Vector3.zero;
     }
-
+    
+    //Update pobiera input z klawiatury odnoœnie poruszania siê
     void Update()
     {
         float stamina = player.statistics["Stamina"].GetValue();
@@ -53,6 +54,8 @@ public class MovementScript : MonoBehaviour
             moveY = 1f;
         }
 
+        //Dash dzia³a tak, ¿e mierzy czas naciœniêcia klawisza np. W
+        //Od jego ostatniego naciœniêcia
         if (Input.GetKeyDown(KeyCode.W))
         {
             float timeSinceLastClick = Time.time - lastClickedTimeW;
@@ -103,6 +106,8 @@ public class MovementScript : MonoBehaviour
         Move(new Vector3(moveX, moveY).normalized, sprint, dash);
     }
 
+    //Tutaj sprawdzane warunki maj¹ daæ koñcow¹ wartoœæ speed'a gracza
+    //I ustawiæ wektor, w którym siê bêdzie porusza³
     private void Move(Vector3 direction, bool sprint, bool dash)
     {
         moveDir = direction;
@@ -122,6 +127,9 @@ public class MovementScript : MonoBehaviour
         }
 
     }
+
+    //Tutaj dzieje siê ca³e poruszanie za pomoc¹ dodawania
+    //si³y (velocity) do rigidbody gracza
     private void FixedUpdate()
     {
         rigidBody.velocity = moveDir * speed;
@@ -163,11 +171,13 @@ public class MovementScript : MonoBehaviour
         player.SetImmunity(dashCooldown);
     }
 
+    //Tu odbywaæ siê bêd¹ wszystkie kolizje na zasadzie Trigger
     private void OnTriggerStay2D(Collider2D collision)
     {
+        //S¹ sprawdzane przez konkretn¹ warstwê (layer) obiektu z jakim gracz koliduje
         if (collision.gameObject.layer == GameManager.GetLayerNumber("Spiketrap"))
         {
-            player.TakeDamage(0.1f);
+            player.TakeDamage(10f);
         }
 
     }
