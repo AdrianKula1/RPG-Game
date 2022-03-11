@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private bool immunity = false;
+    private bool isAlive = true;
     public Dictionary<string, PlayerStatistic> statistics;
     
     //Inicjuje statystyki gracza
@@ -25,6 +26,7 @@ public class Player : MonoBehaviour
     //¯eby nie otrzymaæ 1000 uderzeñ w jednej sekundzie gdy przeciwnik zaatakuje
     public void TakeDamage(float damageValue)
     {
+
         if (!immunity)
         {
             float health = statistics["Health"].GetValue();
@@ -34,13 +36,21 @@ public class Player : MonoBehaviour
         }
 
         if (statistics["Health"].GetValue() <= 0)
+        {
             Die();
+            isAlive = false;
+        }
     }
 
     private void Die()
     {
         Debug.Log("Player died");
     }
+
+    public bool isPlayerAlive()
+    {
+        return isAlive;
+    }    
 
     public IEnumerator TakeDamageCooldown()
     {
