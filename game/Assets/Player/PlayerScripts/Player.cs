@@ -6,16 +6,16 @@ public class Player : MonoBehaviour
 {
     private bool immunity = false;
     private bool isAlive = true;
-    public Dictionary<string, PlayerStatistic> statistics;
+    public Dictionary<string, PlayerStatistic> playerStats;
     
     //Inicjuje statystyki gracza
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
-        statistics = new Dictionary<string, PlayerStatistic>();
-        statistics.Add("Health", new PlayerStatistic("Health", 1, 100f));
-        statistics.Add("Stamina", new PlayerStatistic("Stamina", 1, 100f));
-        statistics.Add("Mana", new PlayerStatistic("Mana", 1, 100f));
+        playerStats = new Dictionary<string, PlayerStatistic>();
+        playerStats.Add("Health", new PlayerStatistic("Health", 1, 100f));
+        playerStats.Add("Stamina", new PlayerStatistic("Stamina", 1, 100f));
+        playerStats.Add("Mana", new PlayerStatistic("Mana", 1, 100f));
     }
 
     public void SetImmunity(bool immunityCondition)
@@ -29,13 +29,13 @@ public class Player : MonoBehaviour
 
         if (!immunity)
         {
-            float health = statistics["Health"].GetValue();
+            float health = playerStats["Health"].GetValue();
             health -= damageValue;
-            statistics["Health"].SetValue(health);
+            playerStats["Health"].SetValue(health);
             StartCoroutine(TakeDamageCooldown());
         }
 
-        if (statistics["Health"].GetValue() <= 0)
+        if (playerStats["Health"].GetValue() <= 0)
         {
             Die();
             isAlive = false;
@@ -47,7 +47,7 @@ public class Player : MonoBehaviour
         Debug.Log("Player died");
     }
 
-    public bool isPlayerAlive()
+    public bool IsPlayerAlive()
     {
         return isAlive;
     }    

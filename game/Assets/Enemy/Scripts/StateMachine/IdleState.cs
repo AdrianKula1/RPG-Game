@@ -10,13 +10,16 @@ public class IdleState : State
     public override State RunCurrentState(EnemyManager enemyManager)
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(enemyManager.transform.position, enemyManager.detectionRadious, layermask.value);
+        canSeePlayer = false;
 
         for (int i = 0; i < colliders.Length; i++)
         {
             if (colliders[i].gameObject.layer == GameManager.GetLayerNumber("Player"))
             {
-                canSeePlayer = true;
+
                 enemyManager.target = colliders[i].gameObject.transform.GetComponent<Player>();
+                if (enemyManager.target.IsPlayerAlive())
+                    canSeePlayer = true;
             }
         }
 

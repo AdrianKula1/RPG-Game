@@ -301,7 +301,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackState: {fileID: 815982654}
+  idleState: {fileID: 1116403980}
   inRange: 0
+  outOfRange: 0
 --- !u!1 &457242925
 GameObject:
   m_ObjectHideFlags: 0
@@ -377,9 +379,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 798811632e716bc4c9132eca6cf28d96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fleeState: {fileID: 0}
-  idleState: {fileID: 0}
-  lowHp: 0
+  fleeState: {fileID: 1470900512}
+  idleState: {fileID: 1116403980}
+  chaseState: {fileID: 58026663}
 --- !u!1 &1116403978
 GameObject:
   m_ObjectHideFlags: 0
@@ -600,7 +602,8 @@ GameObject:
   - component: {fileID: 1272008175}
   - component: {fileID: 1272008174}
   - component: {fileID: 1272008177}
-  m_Layer: 0
+  - component: {fileID: 1272008178}
+  m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -621,9 +624,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: {fileID: 1116403980}
   target: {fileID: 0}
+  rigidBody: {fileID: 0}
   detectionRadious: 5
-  attackRadious: 1
-  speed: 4
+  attackRadious: 1.5
 --- !u!212 &1272008175
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -711,6 +714,27 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!50 &1272008178
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272008172}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 1
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &1420799464
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,22 +5,37 @@ using UnityEngine;
 public class ChaseState : State
 {
     public AttackState attackState;
+    public IdleState idleState;
     public bool inRange;
+    public bool outOfRange;
     public override State RunCurrentState(EnemyManager enemyManager)
     {
-        Vector2 currentPosition = enemyManager.transform.position;
-        Vector2 targetPosition = enemyManager.target.transform.position;
-        float distance = Vector2.Distance(currentPosition, targetPosition);
-
-        if (distance < enemyManager.detectionRadious)
+        inRange = false;
+        outOfRange = false;
+        if (enemyManager.target != null)
         {
-            if (distance > enemyManager.attackRadious)
+            Vector2 currentPosition = enemyManager.transform.position;
+            Vector2 targetPosition = enemyManager.target.transform.position;
+            float distance = Vector2.Distance(currentPosition, targetPosition);
+
+            if (distance < enemyManager.detectionRadious)
             {
-                enemyManager.transform.position = Vector2.MoveTowards(currentPosition, targetPosition, enemyManager.speed * Time.deltaTime);
+                if (distance > enemyManager.attackRadious)
+                {
+                    float speed = enemyManager.enemyStats["Speed"].getValue();
+                    Vector2 direction = (targetPosition - currentPosition).normalized;
+                    enemyManager.rigidBody.velocity = direction * speed;
+                }
+                else
+                {
+                    inRange = true;
+                    enemyManager.rigidBody.velocity = Vector2.zero;
+                }
             }
             else
             {
-                inRange = true;
+                outOfRange = true;
+                enemyManager.rigidBody.velocity = Vector2.zero;
             }
         }
 
@@ -28,6 +43,10 @@ public class ChaseState : State
         if (inRange)
         {
             return attackState;
+        }
+        else if (outOfRange)
+        {
+            return idleState;
         }
         else
         {
