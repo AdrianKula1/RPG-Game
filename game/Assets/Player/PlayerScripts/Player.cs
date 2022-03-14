@@ -6,16 +6,18 @@ public class Player : MonoBehaviour
 {
     private bool immunity = false;
     private bool isAlive = true;
-    public Dictionary<string, PlayerStatistic> playerStats;
+    private Dictionary<string, PlayerStatistic> playerStats;
     
     //Inicjuje statystyki gracza
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
-        playerStats = new Dictionary<string, PlayerStatistic>();
-        playerStats.Add("Health", new PlayerStatistic("Health", 1, 100f));
-        playerStats.Add("Stamina", new PlayerStatistic("Stamina", 1, 100f));
-        playerStats.Add("Mana", new PlayerStatistic("Mana", 1, 100f));
+        playerStats = new Dictionary<string, PlayerStatistic>
+        {
+            { "Health", new PlayerStatistic("Health", 1, 100f) },
+            { "Stamina", new PlayerStatistic("Stamina", 1, 100f) },
+            { "Mana", new PlayerStatistic("Mana", 1, 100f) }
+        };
     }
 
     public void SetImmunity(bool immunityCondition)
@@ -26,20 +28,22 @@ public class Player : MonoBehaviour
     //¯eby nie otrzymaæ 1000 uderzeñ w jednej sekundzie gdy przeciwnik zaatakuje
     public void TakeDamage(float damageValue)
     {
+        float health = getStat("Health");
 
         if (!immunity)
         {
-            float health = playerStats["Health"].GetValue();
             health -= damageValue;
-            playerStats["Health"].SetValue(health);
+            //playerStats["Health"].SetValue(health);
             StartCoroutine(TakeDamageCooldown());
         }
 
-        if (playerStats["Health"].GetValue() <= 0)
+        if (health <= 0)
         {
             Die();
             isAlive = false;
         }
+
+        setStat("Health", health);
     }
 
     private void Die()
@@ -57,5 +61,15 @@ public class Player : MonoBehaviour
         immunity = true;
         yield return new WaitForSeconds(1f);
         immunity = false;
+    }
+
+    public float getStat(string statName)
+    {
+        return playerStats[statName].GetValue();
+    }
+
+    public void setStat(string statName, float value)
+    {
+        playerStats[statName].SetValue(value);
     }
 }

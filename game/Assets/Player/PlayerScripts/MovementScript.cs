@@ -32,11 +32,12 @@ public class MovementScript : MonoBehaviour
     //Update pobiera input z klawiatury odnoœnie poruszania siê
     void Update()
     {
-        float stamina = player.playerStats["Stamina"].GetValue();
+        float stamina = player.getStat("Stamina"); //player.playerStats["Stamina"].GetValue();
         if (stamina < 100f)
         {
             stamina += 0.01f;
-            player.playerStats["Stamina"].SetValue(stamina);
+            player.setStat("Stamina", stamina);
+            //player.playerStats["Stamina"].SetValue(stamina);
         }
 
         float moveY = 0f;
@@ -111,7 +112,7 @@ public class MovementScript : MonoBehaviour
     private void Move(Vector3 direction, bool sprint, bool dash)
     {
         moveDir = direction;
-        float stamina = player.playerStats["Stamina"].GetValue();
+        float stamina = player.getStat("Stamina"); //player.playerStats["Stamina"].GetValue();
         if (dash && !dashCooldown && stamina >= 30f)
         {
             isDash = true;
@@ -133,7 +134,7 @@ public class MovementScript : MonoBehaviour
     private void FixedUpdate()
     {
         rigidBody.velocity = moveDir * speed;
-        float stamina = player.playerStats["Stamina"].GetValue();
+        float stamina = player.getStat("Stamina"); //player.playerStats["Stamina"].GetValue();
         if (moveDir != Vector3.zero)
         {
             if (isSprint)
@@ -159,7 +160,8 @@ public class MovementScript : MonoBehaviour
                 isDash = false;
             }
         }
-        player.playerStats["Stamina"].SetValue(stamina);
+        player.setStat("Stamina", stamina);
+        //player.playerStats["Stamina"].SetValue(stamina);
     }
 
     private IEnumerator DashCoolDown()
