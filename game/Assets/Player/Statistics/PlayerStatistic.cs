@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PlayerStatistic : Stat
 {
-    //opcjonalnie
+    //Opcjonalnie, byæ mo¿e trzeba bêdzie rozdzieliæ
+    //klasê na statystyki zwi¹zane z levelem i te maj¹ce wartoœæ
+    //jak hp, stamina i mana
     private float value;
 
     private int level;
