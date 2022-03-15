@@ -73,6 +73,8 @@
     <Compile Include="Assets\Enemy\Scripts\EnemyManager.cs" />
     <Compile Include="Assets\Enemy\Scripts\StateMachine\FleeState.cs" />
     <Compile Include="Assets\Enemy\Scripts\EnemyStatistics.cs" />
+    <Compile Include="Assets\MapObjects\Scripts\Bush.cs" />
+    <Compile Include="Assets\MapObjects\Scripts\IDestructableObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

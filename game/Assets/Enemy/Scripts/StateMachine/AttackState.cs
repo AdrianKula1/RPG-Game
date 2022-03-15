@@ -26,7 +26,7 @@ public class AttackState : State
 
         if (!attackCooldown && playerAlive)
         {
-            enemyManager.target.TakeDamage(enemyManager.enemyStats["Damage"].getValue());
+            enemyManager.target.TakeDamage(enemyManager.getStat("Damage"));//enemyStats["Damage"].getValue());
             StartCoroutine(AttackCooldown());
             Debug.Log("Attacked Player");
         }
@@ -35,7 +35,7 @@ public class AttackState : State
         {
             return idleState;
         }
-        else if (enemyManager.enemyStats["Health"].getValue() < 10f)
+        else if (enemyManager.getStat("Health") < 10f)//enemyStats["Health"].getValue() < 10f)
         {
             return fleeState;
         }

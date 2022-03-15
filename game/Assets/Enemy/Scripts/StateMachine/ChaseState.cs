@@ -22,7 +22,7 @@ public class ChaseState : State
             {
                 if (distance > enemyManager.attackRadious)
                 {
-                    float speed = enemyManager.enemyStats["Speed"].getValue();
+                    float speed = enemyManager.getStat("Speed");//enemyStats["Speed"].getValue();
                     Vector2 direction = (targetPosition - currentPosition).normalized;
                     enemyManager.rigidBody.velocity = direction * speed;
                 }
