@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ChaseState : State
 {
+    [SerializeField] public LayerMask layermask;
     public AttackState attackState;
     public IdleState idleState;
     public bool inRange;

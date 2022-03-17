@@ -21,7 +21,7 @@ public class EnemyManager : MonoBehaviour
     {
         enemyStats = new Dictionary<string, EnemyStatistics>
         {
-            { "Health", new EnemyStatistics("Health", 100f) },
+            { "Health", new EnemyStatistics("Health", 9f) },
             { "Damage", new EnemyStatistics("Damage", 5f) },
             { "Speed", new EnemyStatistics("Speed", 4f) },
             { "AttackRadious", new EnemyStatistics("AttackRadious", 1.5f) },

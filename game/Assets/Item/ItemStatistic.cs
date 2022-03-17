@@ -7,7 +7,7 @@ public class ItemStatistic
     protected string name;
     protected int value;
 
-    public Stat(string name)
+    public ItemStatistic(string name, int value)
     {
         this.name = name;
         this.value = value;
