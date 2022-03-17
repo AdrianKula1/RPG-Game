@@ -12,25 +12,6 @@ public class AttackState : State
     {
         bool playerAlive = enemyManager.target.IsPlayerAlive();
 
-        if (enemyManager.target != null)
-        {
-            Vector2 currentPosition = enemyManager.transform.position;
-            Vector2 targetPosition = enemyManager.target.transform.position;
-            float distance = Vector2.Distance(currentPosition, targetPosition);
-
-            if (distance > enemyManager.attackRadious)
-            {
-                return chaseState;
-            }
-        }
-
-        if (!attackCooldown && playerAlive)
-        {
-            enemyManager.target.TakeDamage(enemyManager.getStat("Damage"));//enemyStats["Damage"].getValue());
-            StartCoroutine(AttackCooldown());
-            Debug.Log("Attacked Player");
-        }
-
         if (!playerAlive)
         {
             return idleState;
@@ -41,6 +22,25 @@ public class AttackState : State
         }
         else
         {
+            if (enemyManager.target != null)
+            {
+                Vector2 currentPosition = enemyManager.transform.position;
+                Vector2 targetPosition = enemyManager.target.transform.position;
+                float distance = Vector2.Distance(currentPosition, targetPosition);
+
+                if (distance > enemyManager.attackRadious)
+                {
+                    return chaseState;
+                }
+            }
+
+            if (!attackCooldown && playerAlive)
+            {
+                enemyManager.target.TakeDamage(enemyManager.getStat("Damage"));//enemyStats["Damage"].getValue());
+                StartCoroutine(AttackCooldown());
+                Debug.Log("Attacked Player");
+            }
+
             return this;
         }
     }
