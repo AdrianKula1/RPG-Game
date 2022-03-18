@@ -68,7 +68,6 @@
     <Compile Include="Assets\Enemy\Scripts\StateMachine\IdleState.cs" />
     <Compile Include="Assets\MapObjects\Scripts\LocationLoader.cs" />
     <Compile Include="Assets\Player\PlayerScripts\MovementScript.cs" />
-    <Compile Include="Assets\Scripts\TestScripts.cs" />
     <Compile Include="Assets\Item\Item.cs" />
     <Compile Include="Assets\Enemy\Scripts\StateMachine\AttackState.cs" />
     <Compile Include="Assets\Enemy\Scripts\EnemyManager.cs" />

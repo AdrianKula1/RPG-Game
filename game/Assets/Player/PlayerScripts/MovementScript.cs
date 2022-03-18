@@ -5,6 +5,11 @@ using UnityEngine;
 public class MovementScript : MonoBehaviour
 {
 
+    [SerializeField] private Camera m_Camera;
+    [SerializeField] private float cameraLerpSpeed;
+    [SerializeField] private float cameraStickMaxDistance;
+    public bool stickCamera = true; // jeœli false to kamera zwolniona i nie bedzie sie teleportowac do gracza
+
     private Player player;
     private Rigidbody2D rigidBody;
     private Vector3 moveDir;
@@ -24,6 +29,7 @@ public class MovementScript : MonoBehaviour
     private GameObject[] players;
     private void Start()
     {
+        DontDestroyOnLoad(m_Camera);
         player = GetComponent<Player>();
         rigidBody = GetComponent<Rigidbody2D>();
         moveDir = Vector3.zero;
@@ -32,6 +38,13 @@ public class MovementScript : MonoBehaviour
     //Update pobiera input z klawiatury odnoœnie poruszania siê
     void Update()
     {
+        if (stickCamera)
+        {
+            if (Vector3.Distance(m_Camera.transform.position, player.transform.position) > cameraStickMaxDistance)
+                m_Camera.transform.position = player.transform.position;
+            m_Camera.transform.position = Vector3.Lerp(m_Camera.transform.position, new Vector3(player.transform.position.x, player.transform.position.y, -10f), cameraLerpSpeed * Time.deltaTime);
+        }
+        
         float stamina = player.getStat("Stamina"); //player.playerStats["Stamina"].GetValue();
         if (stamina < 100f)
         {
@@ -103,7 +116,7 @@ public class MovementScript : MonoBehaviour
             if (timeSinceLastClick <= 0.2f)
                 dash = true;
         }
-
+        
         Move(new Vector3(moveX, moveY).normalized, sprint, dash);
     }
 
@@ -187,10 +200,5 @@ public class MovementScript : MonoBehaviour
     private void OnLevelWasLoaded(int level)
     {
         transform.position = GameObject.FindWithTag("StartPos").transform.position;
-        players = GameObject.FindGameObjectsWithTag("Player");
-        if(players.Length > 1)
-        {
-            Destroy(players[1]);
-        }
     }
 }
