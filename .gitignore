@@ -6,3 +6,4 @@ game/obj/Debug/*
 *.csproj
 game/.vs/*
 *.cache
+game/.vs/game/v17/.suo
