@@ -5,3 +5,4 @@ game/Logs/*
 game/obj/Debug/*
 *.csproj
 
+game/.vs/game/v17/.suo
