@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     //Inicjuje statystyki gracza
     private void Start()
     {
-        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(this.gameObject);
         playerStats = new Dictionary<string, PlayerStatistic>
         {
             { "Health", new PlayerStatistic("Health", 1, 100f) },
