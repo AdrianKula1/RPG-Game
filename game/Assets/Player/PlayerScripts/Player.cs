@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     private bool immunity = false;
     private bool isAlive = true;
     private Dictionary<string, PlayerStatistic> playerStats;
+    private Inventory inventory;
     
     //Inicjuje statystyki gracza
     private void Start()
@@ -18,7 +19,11 @@ public class Player : MonoBehaviour
             { "Stamina", new PlayerStatistic("Stamina", 1, 100f) },
             { "Mana", new PlayerStatistic("Mana", 1, 100f) }
         };
+
+        inventory = new Inventory();
     }
+
+
 
     public void SetImmunity(bool immunityCondition)
     {
