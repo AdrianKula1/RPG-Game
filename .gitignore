@@ -4,7 +4,5 @@ game/UserSettings/*
 game/Logs/*
 game/obj/Debug/*
 *.csproj
-
-game/.vs/game/v17/.suo
-game/.vs/game/v16/.suo
+game/.vs/*
 *.cache
