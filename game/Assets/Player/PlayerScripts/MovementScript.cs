@@ -7,8 +7,8 @@ public class MovementScript : MonoBehaviour
 
     [SerializeField] private Camera m_Camera;
     [SerializeField] private float cameraLerpSpeed;
-    [SerializeField] private float cameraStickMaxDistance;
     public bool stickCamera = true; // jeœli false to kamera zwolniona i nie bedzie sie teleportowac do gracza
+
 
     private Player player;
     private Rigidbody2D rigidBody;
@@ -40,8 +40,6 @@ public class MovementScript : MonoBehaviour
     {
         if (stickCamera)
         {
-            if (Vector3.Distance(m_Camera.transform.position, player.transform.position) > cameraStickMaxDistance)
-                m_Camera.transform.position = player.transform.position;
             m_Camera.transform.position = Vector3.Lerp(m_Camera.transform.position, new Vector3(player.transform.position.x, player.transform.position.y, -10f), cameraLerpSpeed * Time.deltaTime);
         }
         
@@ -200,5 +198,8 @@ public class MovementScript : MonoBehaviour
     private void OnLevelWasLoaded(int level)
     {
         transform.position = GameObject.FindWithTag("StartPos").transform.position;
+        m_Camera.transform.position = transform.position;
     }
+
+
 }
