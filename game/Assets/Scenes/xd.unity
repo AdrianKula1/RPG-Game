@@ -297,6 +297,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f8213559bfdb52449d8f77d8af8d455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  layermask:
+    serializedVersion: 2
+    m_Bits: 0
   attackState: {fileID: 815982654}
   idleState: {fileID: 1116403980}
   inRange: 0
@@ -498,19 +501,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8470961646195662325, guid: 21013dbdf7e4fe94db6fe053e7bd5057, type: 3}
       propertyPath: m_LocalScale.x
-      value: 8.4156
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8470961646195662325, guid: 21013dbdf7e4fe94db6fe053e7bd5057, type: 3}
       propertyPath: m_LocalScale.y
-      value: 8.5974
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8470961646195662325, guid: 21013dbdf7e4fe94db6fe053e7bd5057, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.71
+      value: -2.91
       objectReference: {fileID: 0}
     - target: {fileID: 8470961646195662325, guid: 21013dbdf7e4fe94db6fe053e7bd5057, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.15
+      value: -3.11
       objectReference: {fileID: 0}
     - target: {fileID: 8470961646195662325, guid: 21013dbdf7e4fe94db6fe053e7bd5057, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1020,8 +1023,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fba5b3a0b31320f4e912072bdfc0ea61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  layermask:
+    serializedVersion: 2
+    m_Bits: 0
   idleState: {fileID: 1116403980}
   isFarAway: 0
+  randomPos: {x: 0, y: 0, z: 0}
 --- !u!1 &1982088598
 GameObject:
   m_ObjectHideFlags: 0
