@@ -7,33 +7,26 @@ public class FleeState : State
     [SerializeField] public LayerMask layermask;
     public IdleState idleState;
     public bool isFarAway;
-    [SerializeField] private Vector3 randomPos;
+    [SerializeField] private GameObject randomPos;
     public override State RunCurrentState(EnemyManager enemyManager)
     {
         isFarAway = false;
-        //Szuka pozycji w obrêbie pierœcienia miêdzy detectionRadious a jakimœ offsetem
-        randomPos = (randomPos == Vector3.zero) ? FindPosition(enemyManager.detectionRadious) : randomPos;
-        //idzie do tej pozycji
-        if (!MoveToPositon(enemyManager))
+        if (randomPos == null)
         {
-            /*Collider2D[] colliders = Physics2D.OverlapCircleAll(enemyManager.transform.position, enemyManager.attackRadious, layermask.value);
-            for (int i = 0; i < colliders.Length; i++)
-            {
-                if (colliders[i].gameObject.layer == GameManager.GetLayerNumber("Obstacle"))
-                {
-                    randomPos = FindPosition(enemyManager.detectionRadious);
-                }
-            }*/
-            CheckCollisions(enemyManager);
+            randomPos = FindPosition(enemyManager.detectionRadious);
+            enemyManager.destinationSetter.target = randomPos.transform;
         }
-        else
+
+        if (enemyManager.path.reachedDestination)
         {
+            Object.Destroy(randomPos);
+            randomPos = null;
             isFarAway = true;
         }
 
-
         if (isFarAway)
         {
+            enemyManager.destinationSetter.target = null;
             return idleState;
         }
         else
@@ -42,15 +35,17 @@ public class FleeState : State
         }
     }
 
-    private Vector3 FindPosition(float radious)
+    private GameObject FindPosition(float radious)
     {
         float offset = radious + Random.Range(0f, 3f);  
         float randomAngle = Random.Range(0f, 359f);
         Vector3 newPosition = new Vector3(offset * Mathf.Cos(randomAngle), offset * Mathf.Sin(randomAngle));
-        return newPosition;
+        GameObject temporaryObject = new GameObject();
+        temporaryObject.transform.position = newPosition;
+        return temporaryObject;
     }
 
-    private bool MoveToPositon(EnemyManager enemyManager)
+    /*private bool MoveToPositon(EnemyManager enemyManager)
     {
         float speed = enemyManager.getStat("Speed");
         if (Vector3.Distance(enemyManager.transform.position, randomPos) > 0.5f)
@@ -65,7 +60,7 @@ public class FleeState : State
             randomPos = Vector3.zero;
             return true;
         }
-    }
+    }*/
 
     private void CheckCollisions(EnemyManager enemyManager)
     {

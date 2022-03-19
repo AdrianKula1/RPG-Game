@@ -6,9 +6,11 @@ public class IdleState : State
 {
     [SerializeField] public LayerMask layermask;
     public ChaseState chaseState;
+    public FleeState fleeState;
     public bool canSeePlayer;
     public override State RunCurrentState(EnemyManager enemyManager)
     {
+
         Collider2D[] colliders = Physics2D.OverlapCircleAll(enemyManager.transform.position, enemyManager.detectionRadious, layermask.value);
         canSeePlayer = false;
 
@@ -26,7 +28,14 @@ public class IdleState : State
 
         if (canSeePlayer)
         {
-            return chaseState;
+            if (enemyManager.lowHp())
+            {
+                return fleeState;
+            }
+            else
+            {
+                return chaseState;
+            }
         }
         else
         {

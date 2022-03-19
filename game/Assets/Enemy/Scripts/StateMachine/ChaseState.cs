@@ -23,26 +23,28 @@ public class ChaseState : State
             {
                 if (distance > enemyManager.attackRadious)
                 {
-                    float speed = enemyManager.getStat("Speed");//enemyStats["Speed"].getValue();
+                    /*float speed = enemyManager.getStat("Speed");//enemyStats["Speed"].getValue();
                     Vector2 direction = (targetPosition - currentPosition).normalized;
-                    enemyManager.rigidBody.velocity = direction * speed;
+                    enemyManager.rigidBody.velocity = direction * speed;*/
+                    enemyManager.destinationSetter.target = enemyManager.target.transform;
                 }
                 else
                 {
                     inRange = true;
-                    enemyManager.rigidBody.velocity = Vector2.zero;
+                    //enemyManager.rigidBody.velocity = Vector2.zero;
                 }
             }
             else
             {
                 outOfRange = true;
-                enemyManager.rigidBody.velocity = Vector2.zero;
+                //enemyManager.rigidBody.velocity = Vector2.zero;
             }
         }
 
 
         if (inRange)
         {
+            enemyManager.destinationSetter.target = null;
             return attackState;
         }
         else if (outOfRange)

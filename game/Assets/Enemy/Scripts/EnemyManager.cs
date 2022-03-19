@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 public class EnemyManager : MonoBehaviour
 {
     public State currentState;
     public Player target;
+    public AIPath path;
+    public AIDestinationSetter destinationSetter;
     private Dictionary<string, EnemyStatistics> enemyStats;
     public Rigidbody2D rigidBody;
     public float detectionRadious = 5f;
@@ -13,7 +16,8 @@ public class EnemyManager : MonoBehaviour
 
     private void Awake()
     {
-       
+        path = GetComponent<AIPath>();
+        destinationSetter = GetComponent<AIDestinationSetter>();       
         rigidBody = GetComponent<Rigidbody2D>();
     }
 
@@ -21,7 +25,7 @@ public class EnemyManager : MonoBehaviour
     {
         enemyStats = new Dictionary<string, EnemyStatistics>
         {
-            { "Health", new EnemyStatistics("Health", 9f) },
+            { "Health", new EnemyStatistics("Health", 11f) },
             { "Damage", new EnemyStatistics("Damage", 5f) },
             { "Speed", new EnemyStatistics("Speed", 4f) },
             { "AttackRadious", new EnemyStatistics("AttackRadious", 1.5f) },
@@ -82,5 +86,10 @@ public class EnemyManager : MonoBehaviour
     public void setStat(string statName, float value)
     {
         enemyStats[statName].setValue(value);
+    }
+
+    public bool lowHp()
+    {
+        return getStat("Health") < 10f;
     }
 }
