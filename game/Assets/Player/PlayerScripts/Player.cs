@@ -7,8 +7,9 @@ public class Player : MonoBehaviour
     private bool immunity = false;
     private bool isAlive = true;
     private Dictionary<string, PlayerStatistic> playerStats;
+
     private Inventory inventory;
-    
+    [SerializeField] private UI_Inventory uiInventory;
     //Inicjuje statystyki gracza
     private void Start()
     {
@@ -21,6 +22,7 @@ public class Player : MonoBehaviour
         };
 
         inventory = new Inventory();
+        uiInventory.SetInventory(inventory);
     }
 
 

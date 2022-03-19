@@ -38,4 +38,15 @@ public class Item
        discription = x;
     }
 
+    public Sprite GetSprite()
+    {
+        switch (ItemType)
+        {
+            default:
+            case itemType.weapon:           return ItemAssets.Instance.weaponSprite;
+            case itemType.armor:            return ItemAssets.Instance.armorSprite;
+            case itemType.healthPotion:     return ItemAssets.Instance.healthPotionSprite;
+            case itemType.manaPotion:       return ItemAssets.Instance.manaPotionSprite;
+        }
+    }
 }
