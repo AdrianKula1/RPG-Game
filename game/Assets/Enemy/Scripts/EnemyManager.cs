@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
-public class EnemyManager : MonoBehaviour
+public class Enemy : MonoBehaviour
 {
     public State currentState;
     public Player target;
     public AIPath path;
     public AIDestinationSetter destinationSetter;
-    private Dictionary<string, EnemyStatistics> enemyStats;
+    private EnemyStatistics enemyStats;
     public Rigidbody2D rigidBody;
     public float detectionRadious = 5f;
     public float attackRadious = 1.5f;
@@ -23,14 +23,7 @@ public class EnemyManager : MonoBehaviour
 
     private void Start()
     {
-        enemyStats = new Dictionary<string, EnemyStatistics>
-        {
-            { "Health", new EnemyStatistics("Health", 11f) },
-            { "Damage", new EnemyStatistics("Damage", 5f) },
-            { "Speed", new EnemyStatistics("Speed", 4f) },
-            { "AttackRadious", new EnemyStatistics("AttackRadious", 1.5f) },
-            { "DetectionRadious", new EnemyStatistics("DetectionRadious", 5f) }
-        };
+        enemyStats = new EnemyStatistics(100f, 4f, 10f, 1f, 5f, 1.5f);
     }
 
     void Update()
@@ -55,14 +48,13 @@ public class EnemyManager : MonoBehaviour
 
     public void TakeDamage(float dmgValue)
     {
-        float health = getStat("Health");//enemyStats["Health"].getValue();
+        float health = enemyStats.GetStat(EnemyStatistics.Stat.Health);
         health -= dmgValue;
 
         if (health < 0f)
             Die();
 
-        setStat("Health", health);
-        //enemyStats["Health"].setValue(health);
+        enemyStats.SetStat(EnemyStatistics.Stat.Health, health);
     }
 
     private void Die()
@@ -78,18 +70,14 @@ public class EnemyManager : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackRadious);
     }
 
-    public float getStat(string statName)
-    {
-        return enemyStats[statName].getValue();
-    }
-
-    public void setStat(string statName, float value)
-    {
-        enemyStats[statName].setValue(value);
-    }
 
     public bool lowHp()
     {
-        return getStat("Health") < 10f;
+        return enemyStats.GetStat(EnemyStatistics.Stat.Health) < 10f;
+    }
+
+    public EnemyStatistics GetEnemyStats()
+    {
+        return enemyStats;
     }
 }

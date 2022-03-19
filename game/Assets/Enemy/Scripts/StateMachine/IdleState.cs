@@ -8,27 +8,14 @@ public class IdleState : State
     public ChaseState chaseState;
     public FleeState fleeState;
     public bool canSeePlayer;
-    public override State RunCurrentState(EnemyManager enemyManager)
+    public override State RunCurrentState(Enemy enemy)
     {
 
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(enemyManager.transform.position, enemyManager.detectionRadious, layermask.value);
-        canSeePlayer = false;
-
-        for (int i = 0; i < colliders.Length; i++)
-        {
-            if (colliders[i].gameObject.layer == GameManager.GetLayerNumber("Player"))
-            {
-
-                enemyManager.target = colliders[i].gameObject.transform.GetComponent<Player>();
-                if (enemyManager.target.IsPlayerAlive())
-                    canSeePlayer = true;
-            }
-        }
-
+        canSeePlayer = CanSeePlayer(enemy);
 
         if (canSeePlayer)
         {
-            if (enemyManager.lowHp())
+            if (enemy.lowHp())
             {
                 return fleeState;
             }
@@ -41,5 +28,23 @@ public class IdleState : State
         {
             return this;
         }
+    }
+
+    private bool CanSeePlayer(Enemy enemy)
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(enemy.transform.position, enemy.GetEnemyStats().GetStat(EnemyStatistics.Stat.DetectionRadious), layermask.value);
+
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            if (colliders[i].gameObject.layer == GameManager.GetLayerNumber("Player"))
+            {
+
+                enemy.target = colliders[i].gameObject.transform.GetComponent<Player>();
+                if (enemy.target.IsPlayerAlive())
+                    return true;
+            }
+        }
+
+        return false;
     }
 }

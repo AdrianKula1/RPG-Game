@@ -9,42 +9,36 @@ public class ChaseState : State
     public IdleState idleState;
     public bool inRange;
     public bool outOfRange;
-    public override State RunCurrentState(EnemyManager enemyManager)
+    public override State RunCurrentState(Enemy enemy)
     {
+        EnemyStatistics stats = enemy.GetEnemyStats();
         inRange = false;
         outOfRange = false;
-        if (enemyManager.target != null)
+        if (enemy.target != null)
         {
-            Vector2 currentPosition = enemyManager.transform.position;
-            Vector2 targetPosition = enemyManager.target.transform.position;
-            float distance = Vector2.Distance(currentPosition, targetPosition);
+            float distance = GameManager.GetDistance(enemy);
 
-            if (distance < enemyManager.detectionRadious)
+            if (distance < stats.GetStat(EnemyStatistics.Stat.DetectionRadious))
             {
-                if (distance > enemyManager.attackRadious)
+                if (distance > stats.GetStat(EnemyStatistics.Stat.AttackRadious))
                 {
-                    /*float speed = enemyManager.getStat("Speed");//enemyStats["Speed"].getValue();
-                    Vector2 direction = (targetPosition - currentPosition).normalized;
-                    enemyManager.rigidBody.velocity = direction * speed;*/
-                    enemyManager.destinationSetter.target = enemyManager.target.transform;
+                    enemy.destinationSetter.target = enemy.target.transform;
                 }
                 else
                 {
                     inRange = true;
-                    //enemyManager.rigidBody.velocity = Vector2.zero;
                 }
             }
             else
             {
                 outOfRange = true;
-                //enemyManager.rigidBody.velocity = Vector2.zero;
             }
         }
 
 
         if (inRange)
         {
-            enemyManager.destinationSetter.target = null;
+            enemy.destinationSetter.target = null;
             return attackState;
         }
         else if (outOfRange)

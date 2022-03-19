@@ -15,4 +15,11 @@ public class GameManager : MonoBehaviour
         }
         return layerNumber -1;
     }
+
+    public static float GetDistance(Enemy enemy)
+    {
+        Vector2 currentPosition = enemy.transform.position;
+        Vector2 targetPosition = enemy.target.transform.position;
+        return Vector2.Distance(currentPosition, targetPosition);
+    }
 }

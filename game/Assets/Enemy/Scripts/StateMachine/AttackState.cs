@@ -8,27 +8,26 @@ public class AttackState : State
     public IdleState idleState;
     public ChaseState chaseState;
     private bool attackCooldown;
-    public override State RunCurrentState(EnemyManager enemyManager)
+    public override State RunCurrentState(Enemy enemy)
     {
-        bool playerAlive = enemyManager.target.IsPlayerAlive();
+        EnemyStatistics stats = enemy.GetEnemyStats();
+        bool playerAlive = enemy.target.IsPlayerAlive();
 
         if (!playerAlive)
         {
             return idleState;
         }
-        else if (enemyManager.getStat("Health") < 10f)//enemyStats["Health"].getValue() < 10f)
+        else if (enemy.lowHp())
         {
             return fleeState;
         }
         else
         {
-            if (enemyManager.target != null)
+            if (enemy.target != null)
             {
-                Vector2 currentPosition = enemyManager.transform.position;
-                Vector2 targetPosition = enemyManager.target.transform.position;
-                float distance = Vector2.Distance(currentPosition, targetPosition);
+                float distance = GameManager.GetDistance(enemy);
 
-                if (distance > enemyManager.attackRadious)
+                if (distance > stats.GetStat(EnemyStatistics.Stat.AttackRadious))
                 {
                     return chaseState;
                 }
@@ -36,19 +35,24 @@ public class AttackState : State
 
             if (!attackCooldown && playerAlive)
             {
-                enemyManager.target.TakeDamage(enemyManager.getStat("Damage"));//enemyStats["Damage"].getValue());
-                StartCoroutine(AttackCooldown());
-                Debug.Log("Attacked Player");
+                Attack(enemy, stats);
             }
 
             return this;
         }
     }
 
-    private IEnumerator AttackCooldown()
+    private void Attack(Enemy enemy, EnemyStatistics stats)
+    {
+        enemy.target.TakeDamage(stats.GetStat(EnemyStatistics.Stat.Damage));
+        StartCoroutine(AttackCooldown(stats.GetStat(EnemyStatistics.Stat.AttackSpeed)));
+        Debug.Log("Attacked Player");
+    }
+
+    private IEnumerator AttackCooldown(float cooldown)
     {
         attackCooldown = true;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(cooldown);
         attackCooldown = false;
     }
 }

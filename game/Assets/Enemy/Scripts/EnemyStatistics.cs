@@ -2,31 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyStatistics : Stat
+public class EnemyStatistics 
 {
-    //Prosta klasa przechowuj¹ca wartoœæ danej statystyki
-    private float value;
-    private float modifier;
-    public EnemyStatistics(string name, float value) : base(name)
+    public enum Stat
     {
-        this.value = value;
-        modifier = 1f;
+        Health,
+        Speed,
+        Damage,
+        AttackSpeed,
+        DetectionRadious,
+        AttackRadious
     }
 
-    public void setValue(float newValue)
+    private Dictionary<Stat, EnemyStatistic> Statistics;
+
+    public EnemyStatistics(float health, float speed, float damage, float attackSpeed, float detectionRadious, float attackRadious)
     {
-        value = newValue;
+        Statistics = new Dictionary<Stat, EnemyStatistic>
+        {
+            {Stat.Health, new EnemyStatistic(health)},
+            {Stat.Speed, new EnemyStatistic(speed)},
+            {Stat.Damage, new EnemyStatistic(damage)},
+            {Stat.AttackSpeed, new EnemyStatistic(attackSpeed)},
+            {Stat.DetectionRadious, new EnemyStatistic(detectionRadious)},
+            {Stat.AttackRadious, new EnemyStatistic(attackRadious)}
+        };
     }
 
-    public void setModifier(float newModifier)
+    public float GetStat(Stat statType)
     {
-        modifier = newModifier;
+        return Statistics[statType].getValue();
     }
-    //Inaczej jak u gracza, u przeciwnika do ró¿nych statystyk
-    //stosowany jest modifier, który w zale¿noœci od danego efektu na przeciwniku
-    //ma zmieniaæ wartoœæ statystyki
-    public float getValue()
+
+    public void SetStat(Stat statType, float value)
     {
-        return value * modifier;
+        Statistics[statType].setValue(value);
+    }
+
+    //TODO
+    public void ApplyEffect()
+    {
+
     }
 }
