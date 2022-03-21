@@ -43,6 +43,7 @@ public class ChaseState : State
         }
         else if (outOfRange)
         {
+            enemy.destinationSetter.target = null;
             return idleState;
         }
         else

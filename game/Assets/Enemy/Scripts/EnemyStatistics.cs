@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class EnemyStatistics 
+using Pathfinding;
+public class EnemyStatistics
 {
     public enum Stat
     {
@@ -14,9 +14,10 @@ public class EnemyStatistics
         AttackRadious
     }
 
+    private AIPath path;
     private Dictionary<Stat, EnemyStatistic> Statistics;
 
-    public EnemyStatistics(float health, float speed, float damage, float attackSpeed, float detectionRadious, float attackRadious)
+    public EnemyStatistics(float health, float speed, float damage, float attackSpeed, float detectionRadious, float attackRadious, AIPath path)
     {
         Statistics = new Dictionary<Stat, EnemyStatistic>
         {
@@ -27,6 +28,8 @@ public class EnemyStatistics
             {Stat.DetectionRadious, new EnemyStatistic(detectionRadious)},
             {Stat.AttackRadious, new EnemyStatistic(attackRadious)}
         };
+
+        this.path = path;
     }
 
     public float GetStat(Stat statType)
@@ -40,8 +43,11 @@ public class EnemyStatistics
     }
 
     //TODO
-    public void ApplyEffect()
+    public void ApplyEffect(Effect effect)
     {
-
+        if (effect.SetEffect(Statistics))
+        {
+            path.maxSpeed = GetStat(Stat.Speed);
+        }
     }
 }

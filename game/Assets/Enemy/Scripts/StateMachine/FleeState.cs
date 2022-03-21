@@ -4,29 +4,32 @@ using UnityEngine;
 
 public class FleeState : State
 {
-    [SerializeField] public LayerMask layermask;
     public IdleState idleState;
     public bool isFarAway;
-    [SerializeField] private GameObject randomPos;
-    public override State RunCurrentState(Enemy enemyManager)
+    [SerializeField] private GameObject randomPos = null;
+    public override State RunCurrentState(Enemy enemy)
     {
+        EnemyStatistics stats = enemy.GetEnemyStats();
+        stats.ApplyEffect(new Flee());
         isFarAway = false;
         if (randomPos == null)
         {
-            randomPos = FindPosition(enemyManager.detectionRadious);
-            enemyManager.destinationSetter.target = randomPos.transform;
+            randomPos = FindPosition(stats.GetStat(EnemyStatistics.Stat.DetectionRadious));
+            enemy.destinationSetter.target = randomPos.transform;
         }
 
-        if (enemyManager.path.reachedDestination)
+        float distance = GameManager.GetDistance(enemy);
+
+        if (distance > stats.GetStat(EnemyStatistics.Stat.DetectionRadious))
         {
-            randomPos = null;
             Object.Destroy(randomPos);
             isFarAway = true;
         }
 
         if (isFarAway)
         {
-            enemyManager.destinationSetter.target = null;
+            enemy.destinationSetter.target = null;
+            stats.ApplyEffect(new Standard());
             return idleState;
         }
         else
@@ -40,7 +43,7 @@ public class FleeState : State
         float offset = radious + Random.Range(0f, 3f);  
         float randomAngle = Random.Range(0f, 359f);
         Vector3 newPosition = new Vector3(offset * Mathf.Cos(randomAngle), offset * Mathf.Sin(randomAngle));
-        GameObject temporaryObject = new GameObject();
+        GameObject temporaryObject = new GameObject("Flee position");
         temporaryObject.transform.position = newPosition;
         return temporaryObject;
     }

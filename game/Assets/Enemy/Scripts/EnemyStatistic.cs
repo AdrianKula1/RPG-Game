@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyStatistic : MonoBehaviour
+public class EnemyStatistic
 {
     //Prosta klasa przechowuj¹ca wartoœæ danej statystyki
     private float value;
