@@ -3,7 +3,11 @@ guid: d7cfa0835b0720e4ab0aaabaf43ecd72
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - weaponSprite: {fileID: 21300000, guid: 4c46cecfe9c919942941743ddb504fea, type: 3}
+  - armorSprite: {fileID: 21300000, guid: 266afb93d9352d64ca326c31ed300fb9, type: 3}
+  - manaPotionSprite: {instanceID: 0}
+  - healthPotionSprite: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
