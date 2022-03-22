@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        enemyStats = new EnemyStatistics(9f, 4f, 10f, 1f, 5f, 1.5f, path);
+        enemyStats = new EnemyStatistics(100f, 4f, 10f, 1f, 5f, 1.5f, path);
         path.maxSpeed = enemyStats.GetStat(EnemyStatistics.Stat.Speed);
     }
 
