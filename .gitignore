@@ -7,3 +7,5 @@ game/obj/Debug/**
 game/.vs/**
 *.cache
 game/.vs/game/v17/.suo
+game/Assembly-CSharp.csproj
+game/game.sln
