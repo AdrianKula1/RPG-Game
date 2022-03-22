@@ -1,9 +1,9 @@
-game/Library/*
-game/Temp/*
-game/UserSettings/*
-game/Logs/*
-game/obj/Debug/*
+game/Library/**
+game/Temp/**
+game/UserSettings/**
+game/Logs/**
+game/obj/Debug/**
 *.csproj
-game/.vs/*
+game/.vs/**
 *.cache
 game/.vs/game/v17/.suo
