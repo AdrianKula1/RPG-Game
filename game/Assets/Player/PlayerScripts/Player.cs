@@ -7,9 +7,35 @@ public class Player : MonoBehaviour
     private bool immunity = false;
     private bool isAlive = true;
     private Dictionary<string, PlayerStatistic> playerStats;
+    private Dictionary<Animation, string> animations;
+    public Animator animator;
+    private string currentState;
 
     private Inventory inventory;
     [SerializeField] private UI_Inventory uiInventory;
+
+
+    //Animacje
+    public enum Animation
+    {
+        IdleFront,
+        IdleRight,
+        IdleLeft,
+        IdleBackward,
+        MoveForward,
+        MoveRight,
+        MoveLeft,
+        MoveBackward,
+        SprintForward,
+        SprintRight,
+        SprintLeft,
+        SprintBackward,
+        DashForward,
+        DashLeft,
+        DashRight,
+        DashBackward
+    }
+
     //Inicjuje statystyki gracza
     private void Start()
     {
@@ -21,8 +47,29 @@ public class Player : MonoBehaviour
             { "Mana", new PlayerStatistic("Mana", 1, 100f) }
         };
 
+        animations = new Dictionary<Animation, string>
+        {
+            {Animation.IdleFront, "PlayerIdleFront" },
+            {Animation.IdleRight, "PlayerIdleRight" },
+            {Animation.IdleLeft, "PlayerIdleLeft" },
+            {Animation.IdleBackward, "PlayerIdleBack" },
+            {Animation.MoveForward, "PlayerWalkForward" },
+            {Animation.MoveRight, "PlayerWalkRight" },
+            {Animation.MoveLeft, "PlayerWalkLeft" },
+            {Animation.MoveBackward, "PlayerWalkBack" },
+            {Animation.SprintForward, "PlayerSprintForward" },
+            {Animation.SprintRight, "PlayerSprintRight" },
+            {Animation.SprintLeft, "PlayerSprintLeft" },
+            {Animation.SprintBackward, "PlayerSprintBack" },
+            {Animation.DashForward, "PlayerDashForward" },
+            {Animation.DashRight, "PlayerDashRight" },
+            {Animation.DashLeft, "PlayerDashLeft" },
+            {Animation.DashBackward, "PlayerDashBack" },
+        };
+
         inventory = new Inventory();
         uiInventory.SetInventory(inventory);
+        animator = GetComponent<Animator>();
     }
 
 
@@ -78,5 +125,20 @@ public class Player : MonoBehaviour
     public void setStat(string statName, float value)
     {
         playerStats[statName].SetValue(value);
+    }
+
+    public string getAnimationName(Animation anim)
+    {
+        return animations[anim];
+    }
+
+    public void ChangeAnimationState(string newState)
+    {
+        if (currentState == newState)
+            return;
+
+        animator.Play(newState);
+
+        currentState = newState;
     }
 }

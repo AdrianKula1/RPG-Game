@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 1179631125}
   - component: {fileID: 1179631123}
   - component: {fileID: 1179631124}
+  - component: {fileID: 1179631121}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -144,6 +145,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!95 &1179631121
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179631120}
+  m_Enabled: 1
+  m_Avatar: {fileID: 1709595240}
+  m_Controller: {fileID: 9100000, guid: 97d4b1578d38e1b478e2f24b4c81d433, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &1179631122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,6 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e88d0857e5657584aa6999d46825fa9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 1179631121}
   uiInventory: {fileID: 0}
 --- !u!50 &1179631123
 Rigidbody2D:
@@ -195,14 +216,14 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 4, y: 1.5}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 1.5}
   m_EdgeRadius: 0
 --- !u!212 &1179631125
 SpriteRenderer:
@@ -244,7 +265,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6e4cb8607a96f6142bfff863306c117a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -367,3 +388,126 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!90 &1709595240
+Avatar:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Automatic Avatar
+  m_AvatarSize: 500
+  m_Avatar:
+    serializedVersion: 3
+    m_AvatarSkeleton:
+      data:
+        m_Node:
+        - m_ParentId: -1
+          m_AxesId: -1
+        m_ID: 00000000
+        m_AxesArray: []
+    m_AvatarSkeletonPose:
+      data:
+        m_X:
+        - t: {x: -4, y: 3.09, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+    m_DefaultPose:
+      data:
+        m_X:
+        - t: {x: -4, y: 3.09, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+    m_SkeletonNameIDArray: 00000000
+    m_Human:
+      data:
+        serializedVersion: 2
+        m_RootX:
+          t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        m_Skeleton:
+          data:
+            m_Node: []
+            m_ID: 
+            m_AxesArray: []
+        m_SkeletonPose:
+          data:
+            m_X: []
+        m_LeftHand:
+          data:
+            m_HandBoneIndex: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+        m_RightHand:
+          data:
+            m_HandBoneIndex: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+        m_HumanBoneIndex: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+        m_HumanBoneMass:
+        - 0.14545456
+        - 0.12121213
+        - 0.12121213
+        - 0.048484854
+        - 0.048484854
+        - 0.009696971
+        - 0.009696971
+        - 0.030303033
+        - 0.14545456
+        - 0.14545456
+        - 0.012121214
+        - 0.048484854
+        - 0.006060607
+        - 0.006060607
+        - 0.024242427
+        - 0.024242427
+        - 0.01818182
+        - 0.01818182
+        - 0.006060607
+        - 0.006060607
+        - 0.0024242427
+        - 0.0024242427
+        - 0
+        - 0
+        - 0
+        m_Scale: 1
+        m_ArmTwist: 0.5
+        m_ForeArmTwist: 0.5
+        m_UpperLegTwist: 0.5
+        m_LegTwist: 0.5
+        m_ArmStretch: 0.05
+        m_LegStretch: 0.05
+        m_FeetSpacing: 0
+        m_HasLeftHand: 0
+        m_HasRightHand: 0
+        m_HasTDoF: 0
+    m_HumanSkeletonIndexArray: 
+    m_HumanSkeletonReverseIndexArray: 
+    m_RootMotionBoneIndex: -1
+    m_RootMotionBoneX:
+      t: {x: 0, y: 0, z: 0}
+      q: {x: 0, y: 0, z: 0, w: 1}
+      s: {x: 1, y: 1, z: 1}
+    m_RootMotionSkeleton:
+      data:
+        m_Node: []
+        m_ID: 
+        m_AxesArray: []
+    m_RootMotionSkeletonPose:
+      data:
+        m_X: []
+    m_RootMotionSkeletonIndexArray: 
+  m_TOS:
+    0: 
+  m_HumanDescription:
+    serializedVersion: 3
+    m_Human: []
+    m_Skeleton: []
+    m_ArmTwist: 0.5
+    m_ForeArmTwist: 0.5
+    m_UpperLegTwist: 0.5
+    m_LegTwist: 0.5
+    m_ArmStretch: 0.05
+    m_LegStretch: 0.05
+    m_FeetSpacing: 0
+    m_GlobalScale: 1
+    m_RootMotionBoneName: 
+    m_HasTranslationDoF: 0
+    m_HasExtraRoot: 0
+    m_SkeletonHasParents: 1

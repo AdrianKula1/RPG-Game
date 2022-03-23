@@ -9,6 +9,14 @@ public class MovementScript : MonoBehaviour
     [SerializeField] private float cameraLerpSpeed;
     public bool stickCamera = true; // jeœli false to kamera zwolniona i nie bedzie sie teleportowac do gracza
 
+    //enumy dla kierunku
+    private enum Direction
+    {
+        Forward,
+        Right,
+        Left,
+        Backward
+    }
 
     private Player player;
     private Rigidbody2D rigidBody;
@@ -17,7 +25,7 @@ public class MovementScript : MonoBehaviour
     private bool isDash = false;
     private bool isSprint = false;
     private bool dashCooldown = false;
-    //private float stamina = 100f;
+    private Direction direction;
 
     //dashowe zmienne
     private float lastClickedTimeW;
@@ -64,6 +72,7 @@ public class MovementScript : MonoBehaviour
         if (Input.GetKey(KeyCode.W))
         {
             moveY = 1f;
+            direction = Direction.Backward;
         }
 
         //Dash dzia³a tak, ¿e mierzy czas naciœniêcia klawisza np. W
@@ -79,6 +88,7 @@ public class MovementScript : MonoBehaviour
         if (Input.GetKey(KeyCode.S))
         {
             moveY = -1f;
+            direction = Direction.Forward;
         }
 
         if (Input.GetKeyDown(KeyCode.S))
@@ -92,6 +102,7 @@ public class MovementScript : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
             moveX = -1f;
+            direction = Direction.Left;
         }
 
         if (Input.GetKeyDown(KeyCode.A))
@@ -105,6 +116,7 @@ public class MovementScript : MonoBehaviour
         if (Input.GetKey(KeyCode.D))
         {
             moveX = 1f;
+            direction = Direction.Right;
         }
 
         if (Input.GetKeyDown(KeyCode.D))
@@ -145,34 +157,44 @@ public class MovementScript : MonoBehaviour
     private void FixedUpdate()
     {
         rigidBody.velocity = moveDir * speed;
-        float stamina = player.getStat("Stamina"); //player.playerStats["Stamina"].GetValue();
-        if (moveDir != Vector3.zero)
+        if (rigidBody.velocity != Vector2.zero)
         {
-            if (isSprint)
+            float stamina = player.getStat("Stamina"); //player.playerStats["Stamina"].GetValue();
+            if (moveDir != Vector3.zero)
             {
-                stamina -= 0.6f;
-                isSprint = false;
-            }
-
-
-            if (isDash)
-            {
-                float dashVelocity = 3f;
-                Vector3 dashPosition = transform.position + moveDir * dashVelocity;
-                RaycastHit2D raycast = Physics2D.Raycast(transform.position, moveDir, dashVelocity, LayerMask.GetMask("Obstacle"));
-                if (raycast.collider != null)
+                if (isSprint)
                 {
-                    dashPosition = raycast.point;
+                    stamina -= 0.6f;
+                    isSprint = false;
+                    setRunningAnimation();
                 }
-
-                rigidBody.MovePosition(dashPosition);
-                stamina -= 30f;
-                StartCoroutine(DashCoolDown());
-                isDash = false;
+                else if (isDash)
+                {
+                    float dashVelocity = 3f;
+                    Vector3 dashPosition = transform.position + moveDir * dashVelocity;
+                    RaycastHit2D raycast = Physics2D.Raycast(transform.position, moveDir, dashVelocity, LayerMask.GetMask("Obstacle"));
+                    if (raycast.collider != null)
+                    {
+                        dashPosition = raycast.point;
+                    }
+                    setDashingAnimation();
+                    rigidBody.MovePosition(dashPosition);
+                    stamina -= 30f;
+                    StartCoroutine(DashCoolDown());
+                    isDash = false;
+                }
+                else
+                {
+                    setWalkingAnimation();
+                }
             }
+            player.setStat("Stamina", stamina);
+            //player.playerStats["Stamina"].SetValue(stamina);
         }
-        player.setStat("Stamina", stamina);
-        //player.playerStats["Stamina"].SetValue(stamina);
+        else
+        {
+            setIdleAnimation();
+        }
     }
 
     private IEnumerator DashCoolDown()
@@ -201,5 +223,84 @@ public class MovementScript : MonoBehaviour
         m_Camera.transform.position = transform.position;
     }
 
+    private void setWalkingAnimation()
+    {
+        if (direction == Direction.Forward)
+        {
+            player.ChangeAnimationState(player.getAnimationName(Player.Animation.MoveForward));
+        }
+        else if (direction == Direction.Right)
+        {
+            player.ChangeAnimationState(player.getAnimationName(Player.Animation.MoveRight));
+        }
+        else if (direction == Direction.Left)
+        {
+            player.ChangeAnimationState(player.getAnimationName(Player.Animation.MoveLeft));
+        }
+        else
+        {
+            player.ChangeAnimationState(player.getAnimationName(Player.Animation.MoveBackward));
+        }
+    }
+
+    private void setRunningAnimation()
+    {
+        if (direction == Direction.Forward)
+        {
+            player.ChangeAnimationState(player.getAnimationName(Player.Animation.SprintForward));
+        }
+        else if (direction == Direction.Right)
+        {
+            player.ChangeAnimationState(player.getAnimationName(Player.Animation.SprintRight));
+        }
+        else if (direction == Direction.Left)
+        {
+            player.ChangeAnimationState(player.getAnimationName(Player.Animation.SprintLeft));
+        }
+        else
+        {
+            player.ChangeAnimationState(player.getAnimationName(Player.Animation.SprintBackward));
+        }
+    }
+
+    private void setIdleAnimation()
+    {
+        if (direction == Direction.Forward)
+        {
+            player.ChangeAnimationState(player.getAnimationName(Player.Animation.IdleFront));
+        }
+        else if (direction == Direction.Right)
+        {
+            player.ChangeAnimationState(player.getAnimationName(Player.Animation.IdleRight));
+        }
+        else if (direction == Direction.Left)
+        {
+            player.ChangeAnimationState(player.getAnimationName(Player.Animation.IdleLeft));
+        }
+        else
+        {
+            player.ChangeAnimationState(player.getAnimationName(Player.Animation.IdleBackward));
+        }
+    }
+
+    private void setDashingAnimation()
+    {
+        if (direction == Direction.Forward)
+        {
+            player.ChangeAnimationState(player.getAnimationName(Player.Animation.DashForward));
+        }
+        else if (direction == Direction.Right)
+        {
+            player.ChangeAnimationState(player.getAnimationName(Player.Animation.DashRight));
+        }
+        else if (direction == Direction.Left)
+        {
+            player.ChangeAnimationState(player.getAnimationName(Player.Animation.DashLeft));
+        }
+        else
+        {
+            player.ChangeAnimationState(player.getAnimationName(Player.Animation.DashBackward));
+        }
+    }
 
 }

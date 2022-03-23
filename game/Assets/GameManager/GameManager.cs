@@ -22,4 +22,14 @@ public class GameManager : MonoBehaviour
         Vector2 targetPosition = enemy.target.transform.position;
         return Vector2.Distance(currentPosition, targetPosition);
     }
+
+    public static void ChangeAnimationState(Animator animator, string currentState, string newState)
+    {
+        if (currentState == newState)
+            return;
+
+        animator.Play(newState);
+
+        currentState = newState;
+    }
 }
