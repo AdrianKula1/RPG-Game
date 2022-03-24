@@ -21,7 +21,7 @@ public class MovementScript : MonoBehaviour
     private Player player;
     private Rigidbody2D Rigidbody;
     private Vector3 MoveDirection;
-    private float speed;//= 6f;
+    private float speed;
     private bool IsDash = false;
     private bool IsSprint = false;
     private bool DashCooldown = false;
@@ -47,88 +47,9 @@ public class MovementScript : MonoBehaviour
     //Update pobiera input z klawiatury odnoœnie poruszania siê
     void Update()
     {
-        if (stickCamera)
-        {
-            m_Camera.transform.position = Vector3.Lerp(m_Camera.transform.position, new Vector3(player.transform.position.x, player.transform.position.y, -10f), cameraLerpSpeed * Time.deltaTime);
-        }
-        
-        float stamina = player.getStat("Stamina"); //player.playerStats["Stamina"].GetValue();
-        if (stamina < 100f)
-        {
-            stamina += 0.01f;
-            player.setStat("Stamina", stamina);
-            //player.playerStats["Stamina"].SetValue(stamina);
-        }
-
-        float moveY = 0f;
-        float moveX = 0f;
-        bool sprint = false;
-        bool dash = false;
-
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            sprint = true;
-        }
-
-        if (Input.GetKey(KeyCode.W))
-        {
-            moveY = 1f;
-            direction = Direction.Backward;
-        }
-
-        //Dash dzia³a tak, ¿e mierzy czas naciœniêcia klawisza np. W
-        //Od jego ostatniego naciœniêcia
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            float timeSinceLastClick = Time.time - lastClickedTimeW;
-            lastClickedTimeW = Time.time;
-            if (timeSinceLastClick <= 0.2f)
-                dash = true;
-        }
-
-        if (Input.GetKey(KeyCode.S))
-        {
-            moveY = -1f;
-            direction = Direction.Forward;
-        }
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            float timeSinceLastClick = Time.time - lastClickedTimeS;
-            lastClickedTimeS = Time.time;
-            if (timeSinceLastClick <= 0.2f)
-                dash = true;
-        }
-
-        if (Input.GetKey(KeyCode.A))
-        {
-            moveX = -1f;
-            direction = Direction.Left;
-        }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            float timeSinceLastClick = Time.time - lastClickedTimeA;
-            lastClickedTimeA = Time.time;
-            if (timeSinceLastClick <= 0.2f)
-                dash = true;
-        }
-
-        if (Input.GetKey(KeyCode.D))
-        {
-            moveX = 1f;
-            direction = Direction.Right;
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            float timeSinceLastClick = Time.time - lastClickedTimeD;
-            lastClickedTimeD = Time.time;
-            if (timeSinceLastClick <= 0.2f)
-                dash = true;
-        }
-        
-        Move(new Vector3(moveX, moveY).normalized, sprint, dash);
+        StickCamera();
+        RegenerateStamina();
+        ReadInput();
     }
 
 
@@ -145,8 +66,9 @@ public class MovementScript : MonoBehaviour
     private IEnumerator Dash(Vector3 dashPosition)
     {
         CanMove = false;
+        Rigidbody.MovePosition(Vector3.Lerp(transform.position, dashPosition, 0.5f));
         setDashingAnimation();
-        yield return new WaitForSeconds(0.20f);
+        yield return new WaitForSeconds(0.30f);
         Rigidbody.MovePosition(dashPosition);
         CanMove = true;
     }
@@ -258,15 +180,113 @@ public class MovementScript : MonoBehaviour
         }
     }
 
+    private void ReadInput()
+    {
+        float moveY = 0f;
+        float moveX = 0f;
+        bool sprint = false;
+        bool dash = false;
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            sprint = true;
+        }
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            moveY = 1f;
+            direction = Direction.Backward;
+        }
+
+        //Dash dzia³a tak, ¿e mierzy czas naciœniêcia klawisza np. W
+        //Od jego ostatniego naciœniêcia
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            float timeSinceLastClick = Time.time - lastClickedTimeW;
+            lastClickedTimeW = Time.time;
+            if (timeSinceLastClick <= 0.2f)
+                dash = true;
+        }
+
+        if (Input.GetKey(KeyCode.S))
+        {
+            moveY = -1f;
+            direction = Direction.Forward;
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            float timeSinceLastClick = Time.time - lastClickedTimeS;
+            lastClickedTimeS = Time.time;
+            if (timeSinceLastClick <= 0.2f)
+                dash = true;
+        }
+
+        if (Input.GetKey(KeyCode.A))
+        {
+            moveX = -1f;
+            direction = Direction.Left;
+        }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            float timeSinceLastClick = Time.time - lastClickedTimeA;
+            lastClickedTimeA = Time.time;
+            if (timeSinceLastClick <= 0.2f)
+                dash = true;
+        }
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            moveX = 1f;
+            direction = Direction.Right;
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            float timeSinceLastClick = Time.time - lastClickedTimeD;
+            lastClickedTimeD = Time.time;
+            if (timeSinceLastClick <= 0.2f)
+                dash = true;
+        }
+
+        Move(new Vector3(moveX, moveY).normalized, sprint, dash);
+    }
+
+    private void RegenerateStamina()
+    {
+        float stamina = player.getStat("Stamina");
+        if (stamina < 100f)
+        {
+            stamina += 0.01f;
+            player.setStat("Stamina", stamina);
+        }
+    }
+
     //Tutaj dzieje siê ca³e poruszanie za pomoc¹ dodawania
     //si³y (velocity) do rigidbody gracza
     private void MoveTo()
     {
-        Rigidbody.velocity = MoveDirection * speed;
-        if (Rigidbody.velocity != Vector2.zero)
+        
+        if (MoveDirection != Vector3.zero)
         {
-            float stamina = player.getStat("Stamina"); //player.playerStats["Stamina"].GetValue();
-            if (MoveDirection != Vector3.zero)
+            float stamina = player.getStat("Stamina");
+            if (IsDash)
+            {
+                float dashVelocity = 2.5f;
+                Vector3 dashPosition = transform.position + MoveDirection * dashVelocity;
+                RaycastHit2D raycast = Physics2D.Raycast(transform.position, MoveDirection, dashVelocity, LayerMask.GetMask("Obstacle"));
+                if (raycast.collider != null)
+                {
+                    dashPosition = raycast.point;
+                }
+
+                StartCoroutine(Dash(dashPosition));
+                StartCoroutine(DashCoolDown());
+                stamina -= 30f;
+                IsDash = false;
+            }
+            else
             {
                 if (IsSprint)
                 {
@@ -274,35 +294,24 @@ public class MovementScript : MonoBehaviour
                     IsSprint = false;
                     setRunningAnimation();
                 }
-                else if (IsDash)
-                {
-                    float dashVelocity = 3f;
-                    Vector3 dashPosition = transform.position + MoveDirection * dashVelocity;
-                    RaycastHit2D raycast = Physics2D.Raycast(transform.position, MoveDirection, dashVelocity, LayerMask.GetMask("Obstacle"));
-                    if (raycast.collider != null)
-                    {
-                        dashPosition = raycast.point;
-                    }
 
-                    StartCoroutine(Dash(dashPosition));
-                    stamina -= 30f;
-                    StartCoroutine(DashCoolDown());
-                    IsDash = false;
-                }
                 else
                 {
                     setWalkingAnimation();
                 }
+
+                Rigidbody.velocity = MoveDirection * speed;
             }
-            player.setStat("Stamina", stamina);
-            //player.playerStats["Stamina"].SetValue(stamina);
+            
+        player.setStat("Stamina", stamina);
+        //player.playerStats["Stamina"].SetValue(stamina);
         }
         else
         {
+            Rigidbody.velocity = Vector3.zero;
             setIdleAnimation();
         }
     }
-
 
     //Tutaj sprawdzane warunki maj¹ daæ koñcow¹ wartoœæ speed'a gracza
     //I ustawiæ wektor, w którym siê bêdzie porusza³
@@ -324,5 +333,13 @@ public class MovementScript : MonoBehaviour
             speed = 6f;
         }
 
+    }
+
+    private void StickCamera()
+    {
+        if (stickCamera)
+        {
+            m_Camera.transform.position = Vector3.Lerp(m_Camera.transform.position, new Vector3(player.transform.position.x, player.transform.position.y, -10f), cameraLerpSpeed * Time.deltaTime);
+        }
     }
 }
