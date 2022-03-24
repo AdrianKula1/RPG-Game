@@ -19,12 +19,13 @@ public class MovementScript : MonoBehaviour
     }
 
     private Player player;
-    private Rigidbody2D rigidBody;
-    private Vector3 moveDir;
+    private Rigidbody2D Rigidbody;
+    private Vector3 MoveDirection;
     private float speed;//= 6f;
-    private bool isDash = false;
-    private bool isSprint = false;
-    private bool dashCooldown = false;
+    private bool IsDash = false;
+    private bool IsSprint = false;
+    private bool DashCooldown = false;
+    public bool CanMove = true;
     private Direction direction;
 
     //dashowe zmienne
@@ -39,8 +40,8 @@ public class MovementScript : MonoBehaviour
     {
         DontDestroyOnLoad(m_Camera);
         player = GetComponent<Player>();
-        rigidBody = GetComponent<Rigidbody2D>();
-        moveDir = Vector3.zero;
+        Rigidbody = GetComponent<Rigidbody2D>();
+        MoveDirection = Vector3.zero;
     }
     
     //Update pobiera input z klawiatury odnoœnie poruszania siê
@@ -130,83 +131,36 @@ public class MovementScript : MonoBehaviour
         Move(new Vector3(moveX, moveY).normalized, sprint, dash);
     }
 
-    //Tutaj sprawdzane warunki maj¹ daæ koñcow¹ wartoœæ speed'a gracza
-    //I ustawiæ wektor, w którym siê bêdzie porusza³
-    private void Move(Vector3 direction, bool sprint, bool dash)
-    {
-        moveDir = direction;
-        float stamina = player.getStat("Stamina"); //player.playerStats["Stamina"].GetValue();
-        if (dash && !dashCooldown && stamina >= 30f)
-        {
-            isDash = true;
-        }
-        else if (sprint && stamina >= 0)
-        {
-            speed = 12f;
-            isSprint = true;
-        }
-        else
-        {
-            speed = 6f;
-        }
 
-    }
 
-    //Tutaj dzieje siê ca³e poruszanie za pomoc¹ dodawania
-    //si³y (velocity) do rigidbody gracza
     private void FixedUpdate()
     {
-        rigidBody.velocity = moveDir * speed;
-        if (rigidBody.velocity != Vector2.zero)
+        if (CanMove)
         {
-            float stamina = player.getStat("Stamina"); //player.playerStats["Stamina"].GetValue();
-            if (moveDir != Vector3.zero)
-            {
-                if (isSprint)
-                {
-                    stamina -= 0.6f;
-                    isSprint = false;
-                    setRunningAnimation();
-                }
-                else if (isDash)
-                {
-                    float dashVelocity = 3f;
-                    Vector3 dashPosition = transform.position + moveDir * dashVelocity;
-                    RaycastHit2D raycast = Physics2D.Raycast(transform.position, moveDir, dashVelocity, LayerMask.GetMask("Obstacle"));
-                    if (raycast.collider != null)
-                    {
-                        dashPosition = raycast.point;
-                    }
-                    setDashingAnimation();
-                    rigidBody.MovePosition(dashPosition);
-                    stamina -= 30f;
-                    StartCoroutine(DashCoolDown());
-                    isDash = false;
-                }
-                else
-                {
-                    setWalkingAnimation();
-                }
-            }
-            player.setStat("Stamina", stamina);
-            //player.playerStats["Stamina"].SetValue(stamina);
+            MoveTo();
         }
-        else
-        {
-            setIdleAnimation();
-        }
+    }
+
+    //OpóŸniacze
+    private IEnumerator Dash(Vector3 dashPosition)
+    {
+        CanMove = false;
+        setDashingAnimation();
+        yield return new WaitForSeconds(0.20f);
+        Rigidbody.MovePosition(dashPosition);
+        CanMove = true;
     }
 
     private IEnumerator DashCoolDown()
     {
-        dashCooldown = true;
-        player.SetImmunity(dashCooldown);
+        DashCooldown = true;
+        player.SetImmunity(DashCooldown);
         yield return new WaitForSeconds(3f);
-        dashCooldown = false;
-        player.SetImmunity(dashCooldown);
+        DashCooldown = false;
+        player.SetImmunity(DashCooldown);
     }
 
-    //Tu odbywaæ siê bêd¹ wszystkie kolizje na zasadzie Trigger
+    //Do wywalenia
     private void OnTriggerStay2D(Collider2D collision)
     {
         //S¹ sprawdzane przez konkretn¹ warstwê (layer) obiektu z jakim gracz koliduje
@@ -223,6 +177,7 @@ public class MovementScript : MonoBehaviour
         m_Camera.transform.position = transform.position;
     }
 
+    //Ustawianie konkretnych animacji
     private void setWalkingAnimation()
     {
         if (direction == Direction.Forward)
@@ -303,4 +258,71 @@ public class MovementScript : MonoBehaviour
         }
     }
 
+    //Tutaj dzieje siê ca³e poruszanie za pomoc¹ dodawania
+    //si³y (velocity) do rigidbody gracza
+    private void MoveTo()
+    {
+        Rigidbody.velocity = MoveDirection * speed;
+        if (Rigidbody.velocity != Vector2.zero)
+        {
+            float stamina = player.getStat("Stamina"); //player.playerStats["Stamina"].GetValue();
+            if (MoveDirection != Vector3.zero)
+            {
+                if (IsSprint)
+                {
+                    stamina -= 0.6f;
+                    IsSprint = false;
+                    setRunningAnimation();
+                }
+                else if (IsDash)
+                {
+                    float dashVelocity = 3f;
+                    Vector3 dashPosition = transform.position + MoveDirection * dashVelocity;
+                    RaycastHit2D raycast = Physics2D.Raycast(transform.position, MoveDirection, dashVelocity, LayerMask.GetMask("Obstacle"));
+                    if (raycast.collider != null)
+                    {
+                        dashPosition = raycast.point;
+                    }
+
+                    StartCoroutine(Dash(dashPosition));
+                    stamina -= 30f;
+                    StartCoroutine(DashCoolDown());
+                    IsDash = false;
+                }
+                else
+                {
+                    setWalkingAnimation();
+                }
+            }
+            player.setStat("Stamina", stamina);
+            //player.playerStats["Stamina"].SetValue(stamina);
+        }
+        else
+        {
+            setIdleAnimation();
+        }
+    }
+
+
+    //Tutaj sprawdzane warunki maj¹ daæ koñcow¹ wartoœæ speed'a gracza
+    //I ustawiæ wektor, w którym siê bêdzie porusza³
+    private void Move(Vector3 direction, bool sprint, bool dash)
+    {
+        MoveDirection = direction;
+        float stamina = player.getStat("Stamina"); //player.playerStats["Stamina"].GetValue();
+        if (dash && !DashCooldown && stamina >= 30f)
+        {
+            IsDash = true;
+        }
+        else if (sprint && stamina >= 0)
+        {
+            speed = 12f;
+            IsSprint = true;
+        }
+        else
+        {
+            speed = 6f;
+        }
+
+    }
 }
