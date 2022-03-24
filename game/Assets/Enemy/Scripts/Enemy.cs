@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Character
 {
     public State currentState;
     public Player target;
@@ -48,7 +48,7 @@ public class Enemy : MonoBehaviour
         currentState = nextState;
     }
 
-    public void TakeDamage(float dmgValue)
+    public override void TakeDamage(float dmgValue)
     {
         float health = enemyStats.GetStat(EnemyStatistics.Stat.Health);
         health -= dmgValue;

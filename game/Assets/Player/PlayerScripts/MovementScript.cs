@@ -255,22 +255,20 @@ public class MovementScript : MonoBehaviour
 
     private void RegenerateStamina()
     {
-        float stamina = player.getStat("Stamina");
-        if (stamina < 100f)
-        {
-            stamina += 0.01f;
-            player.setStat("Stamina", stamina);
-        }
+        float stamina = player.GetStats().GetValue(PlayerStatistics.Stat.Stamina);
+        stamina += 0.01f;
+        player.GetStats().SetValue(PlayerStatistics.Stat.Stamina, stamina);
+
     }
 
     //Tutaj dzieje siê ca³e poruszanie za pomoc¹ dodawania
     //si³y (velocity) do rigidbody gracza
     private void MoveTo()
     {
-        
+
         if (MoveDirection != Vector3.zero)
         {
-            float stamina = player.getStat("Stamina");
+            float stamina = player.GetStats().GetValue(PlayerStatistics.Stat.Stamina);
             if (IsDash)
             {
                 float dashVelocity = 2.5f;
@@ -302,9 +300,8 @@ public class MovementScript : MonoBehaviour
 
                 Rigidbody.velocity = MoveDirection * speed;
             }
-            
-        player.setStat("Stamina", stamina);
-        //player.playerStats["Stamina"].SetValue(stamina);
+
+            player.GetStats().SetValue(PlayerStatistics.Stat.Stamina, stamina);
         }
         else
         {
@@ -318,7 +315,7 @@ public class MovementScript : MonoBehaviour
     private void Move(Vector3 direction, bool sprint, bool dash)
     {
         MoveDirection = direction;
-        float stamina = player.getStat("Stamina"); //player.playerStats["Stamina"].GetValue();
+        float stamina = player.GetStats().GetValue(PlayerStatistics.Stat.Stamina); //player.playerStats["Stamina"].GetValue();
         if (dash && !DashCooldown && stamina >= 30f)
         {
             IsDash = true;

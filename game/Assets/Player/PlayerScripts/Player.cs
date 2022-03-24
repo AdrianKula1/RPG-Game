@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : Character
 {
     private bool immunity = false;
     private bool isAlive = true;
-    private Dictionary<string, PlayerStatistic> playerStats;
+    private PlayerStatistics playerStats;
     private Dictionary<Animation, string> animations;
     public Animator animator;
     private string currentState;
@@ -40,12 +40,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         DontDestroyOnLoad(this.gameObject);
-        playerStats = new Dictionary<string, PlayerStatistic>
-        {
-            { "Health", new PlayerStatistic("Health", 1, 100f) },
-            { "Stamina", new PlayerStatistic("Stamina", 1, 100f) },
-            { "Mana", new PlayerStatistic("Mana", 1, 100f) }
-        };
+        playerStats = new PlayerStatistics(100f, 100f, 100f);
 
         animations = new Dictionary<Animation, string>
         {
@@ -80,14 +75,13 @@ public class Player : MonoBehaviour
     }
     //Otrzymywanie obra¿eñ, immunity ma dzia³aæ jak cooldown tak¿e
     //¯eby nie otrzymaæ 1000 uderzeñ w jednej sekundzie gdy przeciwnik zaatakuje
-    public void TakeDamage(float damageValue)
+    public override void TakeDamage(float damageValue)
     {
-        float health = getStat("Health");
+        float health = playerStats.GetValue(PlayerStatistics.Stat.Health);
 
         if (!immunity)
         {
             health -= damageValue;
-            //playerStats["Health"].SetValue(health);
             StartCoroutine(TakeDamageCooldown());
         }
 
@@ -97,7 +91,7 @@ public class Player : MonoBehaviour
             isAlive = false;
         }
 
-        setStat("Health", health);
+        playerStats.SetValue(PlayerStatistics.Stat.Health, health);
     }
 
     private void Die()
@@ -117,16 +111,6 @@ public class Player : MonoBehaviour
         immunity = false;
     }
 
-    public float getStat(string statName)
-    {
-        return playerStats[statName].GetValue();
-    }
-
-    public void setStat(string statName, float value)
-    {
-        playerStats[statName].SetValue(value);
-    }
-
     public string getAnimationName(Animation anim)
     {
         return animations[anim];
@@ -140,5 +124,10 @@ public class Player : MonoBehaviour
         animator.Play(newState);
 
         currentState = newState;
+    }
+
+    public PlayerStatistics GetStats()
+    {
+        return playerStats;
     }
 }
