@@ -48,7 +48,7 @@ public class MovementScript : MonoBehaviour
     void Update()
     {
         StickCamera();
-        RegenerateStamina();
+        player.ChangeStamina(0.01f);
         ReadInput();
     }
 
@@ -253,14 +253,6 @@ public class MovementScript : MonoBehaviour
         Move(new Vector3(moveX, moveY).normalized, sprint, dash);
     }
 
-    private void RegenerateStamina()
-    {
-        float stamina = player.GetStats().GetValue(PlayerStatistics.Stat.Stamina);
-        stamina += 0.01f;
-        player.GetStats().SetValue(PlayerStatistics.Stat.Stamina, stamina);
-
-    }
-
     //Tutaj dzieje siê ca³e poruszanie za pomoc¹ dodawania
     //si³y (velocity) do rigidbody gracza
     private void MoveTo()
@@ -268,7 +260,6 @@ public class MovementScript : MonoBehaviour
 
         if (MoveDirection != Vector3.zero)
         {
-            float stamina = player.GetStats().GetValue(PlayerStatistics.Stat.Stamina);
             if (IsDash)
             {
                 float dashVelocity = 2.5f;
@@ -281,14 +272,14 @@ public class MovementScript : MonoBehaviour
 
                 StartCoroutine(Dash(dashPosition));
                 StartCoroutine(DashCoolDown());
-                stamina -= 30f;
+                player.ChangeStamina(-30f);
                 IsDash = false;
             }
             else
             {
                 if (IsSprint)
                 {
-                    stamina -= 0.6f;
+                    player.ChangeStamina(-0.6f);
                     IsSprint = false;
                     setRunningAnimation();
                 }
@@ -300,8 +291,6 @@ public class MovementScript : MonoBehaviour
 
                 Rigidbody.velocity = MoveDirection * speed;
             }
-
-            player.GetStats().SetValue(PlayerStatistics.Stat.Stamina, stamina);
         }
         else
         {
@@ -315,7 +304,7 @@ public class MovementScript : MonoBehaviour
     private void Move(Vector3 direction, bool sprint, bool dash)
     {
         MoveDirection = direction;
-        float stamina = player.GetStats().GetValue(PlayerStatistics.Stat.Stamina); //player.playerStats["Stamina"].GetValue();
+        float stamina = player.GetStats().GetValue(PlayerStatistics.Stat.Stamina);
         if (dash && !DashCooldown && stamina >= 30f)
         {
             IsDash = true;

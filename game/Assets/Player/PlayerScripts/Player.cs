@@ -6,8 +6,12 @@ public class Player : Character
 {
     private bool immunity = false;
     private bool isAlive = true;
-    private PlayerStatistics playerStats;
-    private Dictionary<Animation, string> animations;
+    private PlayerStatistics PlayerStats;
+    private Dictionary<Animation, string> Animations;
+    public Bar HealthBar;
+    public Bar ManaBar;
+    public Bar StaminaBar;
+
     public Animator animator;
     private string currentState;
 
@@ -40,9 +44,9 @@ public class Player : Character
     private void Start()
     {
         DontDestroyOnLoad(this.gameObject);
-        playerStats = new PlayerStatistics(100f, 100f, 100f);
+        PlayerStats = new PlayerStatistics(100f, 100f, 100f);
 
-        animations = new Dictionary<Animation, string>
+        Animations = new Dictionary<Animation, string>
         {
             {Animation.IdleFront, "PlayerIdleFront" },
             {Animation.IdleRight, "PlayerIdleRight" },
@@ -77,7 +81,8 @@ public class Player : Character
     //¯eby nie otrzymaæ 1000 uderzeñ w jednej sekundzie gdy przeciwnik zaatakuje
     public override void TakeDamage(float damageValue)
     {
-        float health = playerStats.GetValue(PlayerStatistics.Stat.Health);
+        float health = PlayerStats.GetValue(PlayerStatistics.Stat.Health);
+        float maxHealth = PlayerStats.GetMaxValue(PlayerStatistics.Stat.Health);
 
         if (!immunity)
         {
@@ -91,7 +96,18 @@ public class Player : Character
             isAlive = false;
         }
 
-        playerStats.SetValue(PlayerStatistics.Stat.Health, health);
+        PlayerStats.SetValue(PlayerStatistics.Stat.Health, health);
+        HealthBar.UpdateBar(health, maxHealth);
+    }
+
+    public void ChangeStamina(float value)
+    {
+        float stamina = PlayerStats.GetValue(PlayerStatistics.Stat.Stamina);
+        float maxStamina = PlayerStats.GetMaxValue(PlayerStatistics.Stat.Stamina);
+
+        stamina += value;
+        PlayerStats.SetValue(PlayerStatistics.Stat.Stamina, stamina);
+        StaminaBar.UpdateBar(stamina, maxStamina);
     }
 
     private void Die()
@@ -113,7 +129,7 @@ public class Player : Character
 
     public string getAnimationName(Animation anim)
     {
-        return animations[anim];
+        return Animations[anim];
     }
 
     public void ChangeAnimationState(string newState)
@@ -128,6 +144,6 @@ public class Player : Character
 
     public PlayerStatistics GetStats()
     {
-        return playerStats;
+        return PlayerStats;
     }
 }

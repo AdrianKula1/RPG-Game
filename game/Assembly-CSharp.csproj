@@ -56,6 +56,7 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Player\PlayerScripts\Statistics\PlayerStatistics.cs" />
     <Compile Include="Assets\Enemy\Scripts\Effects\Standard.cs" />
     <Compile Include="Assets\Player\PlayerScripts\Statistics\Stat.cs" />
     <Compile Include="Assets\Player\PlayerScripts\Statistics\BarStatistic.cs" />
@@ -79,12 +80,12 @@
     <Compile Include="Assets\Enemy\Scripts\StateMachine\AttackState.cs" />
     <Compile Include="Assets\Enemy\Scripts\Enemy.cs" />
     <Compile Include="Assets\Enemy\Scripts\StateMachine\FleeState.cs" />
+    <Compile Include="Assets\Characters\Character.cs" />
     <Compile Include="Assets\Enemy\Scripts\EnemyStatistic.cs" />
     <Compile Include="Assets\Enemy\Scripts\EnemyStatistics.cs" />
     <Compile Include="Assets\Item\ItemAssets.cs" />
     <Compile Include="Assets\Item\ItemStatistic.cs" />
-    <Compile Include="Assets\Player\PlayerScripts\Statistics\PlayerStatistics.cs" />
-    <Compile Include="Assets\Characters\Character.cs" />
+    <Compile Include="Assets\Player\PlayerScripts\Bar.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

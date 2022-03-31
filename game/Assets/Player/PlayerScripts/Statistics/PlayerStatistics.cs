@@ -46,6 +46,19 @@ public class PlayerStatistics
         }
     }
 
+    public float GetMaxValue(Stat statType)
+    {
+        if (statType == Stat.Health || statType == Stat.Mana || statType == Stat.Stamina)
+        {
+            BarStatistic statistic = (BarStatistic)Statistics[statType];
+            return statistic.GetMaxValue();
+        }
+        else
+        {
+            return -1f;
+        }
+    }
+
     public int GetLevel(Stat statType)
     {
         return Statistics[statType].GetLevel();

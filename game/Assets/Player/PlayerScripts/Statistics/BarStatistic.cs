@@ -14,6 +14,11 @@ public class BarStatistic : PlayerStatistic
         Value = maxValue;
     }
 
+    public float GetMaxValue()
+    {
+        return MaxValue;
+    }
+
     public float GetValue()
     {
         return Value;
