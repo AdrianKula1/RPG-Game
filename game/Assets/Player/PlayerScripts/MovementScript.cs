@@ -83,7 +83,7 @@ public class MovementScript : MonoBehaviour
     }
 
     //Do wywalenia
-    private void OnTriggerStay2D(Collider2D collision)
+    /*private void OnTriggerStay2D(Collider2D collision)
     {
         //S¹ sprawdzane przez konkretn¹ warstwê (layer) obiektu z jakim gracz koliduje
         if (collision.gameObject.layer == GameManager.GetLayerNumber("Spiketrap"))
@@ -91,7 +91,7 @@ public class MovementScript : MonoBehaviour
             player.TakeDamage(10f);
         }
 
-    }
+    }*/
     //Ustawienie pozycji bohatera po za³adowaniu nowej sceny
     private void OnLevelWasLoaded(int level)
     {

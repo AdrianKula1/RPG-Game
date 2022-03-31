@@ -74,6 +74,7 @@
     <Compile Include="Assets\MapObjects\Scripts\LocationLoader.cs" />
     <Compile Include="Assets\Item\UI_Inventory.cs" />
     <Compile Include="Assets\Player\PlayerScripts\MovementScript.cs" />
+    <Compile Include="Assets\Player\PlayerScripts\Bar.cs" />
     <Compile Include="Assets\Player\PlayerScripts\Statistics\LevelStatistic.cs" />
     <Compile Include="Assets\Enemy\Scripts\Effects\Flee.cs" />
     <Compile Include="Assets\Item\Item.cs" />
@@ -85,7 +86,7 @@
     <Compile Include="Assets\Enemy\Scripts\EnemyStatistics.cs" />
     <Compile Include="Assets\Item\ItemAssets.cs" />
     <Compile Include="Assets\Item\ItemStatistic.cs" />
-    <Compile Include="Assets\Player\PlayerScripts\Bar.cs" />
+    <Compile Include="Assets\MapObjects\Scripts\Trap.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
