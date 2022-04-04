@@ -43,7 +43,6 @@ public class Player : Character
     //Inicjuje statystyki gracza
     private void Start()
     {
-        DontDestroyOnLoad(this.gameObject);
         PlayerStats = new PlayerStatistics(100f, 100f, 100f);
 
         Animations = new Dictionary<Animation, string>

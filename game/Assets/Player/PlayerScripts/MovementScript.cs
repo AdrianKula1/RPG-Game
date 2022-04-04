@@ -38,7 +38,6 @@ public class MovementScript : MonoBehaviour
     private GameObject[] players;
     private void Start()
     {
-        DontDestroyOnLoad(m_Camera);
         player = GetComponent<Player>();
         Rigidbody = GetComponent<Rigidbody2D>();
         MoveDirection = Vector3.zero;
