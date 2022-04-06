@@ -23,6 +23,7 @@ public class ChaseState : State
                 if (distance > stats.GetStat(EnemyStatistics.Stat.AttackRadious))
                 {
                     enemy.destinationSetter.target = enemy.target.transform;
+                    GameManager.PlayParticles(enemy.particles);
                 }
                 else
                 {
@@ -39,15 +40,18 @@ public class ChaseState : State
         if (inRange)
         {
             enemy.destinationSetter.target = null;
+            GameManager.StopParticles(enemy.particles);
             return attackState;
         }
         else if (outOfRange)
         {
             enemy.destinationSetter.target = null;
+            GameManager.StopParticles(enemy.particles);
             return idleState;
         }
         else
         {
+
             return this;
         }
     }

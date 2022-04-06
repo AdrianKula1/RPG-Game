@@ -11,8 +11,9 @@ public class Enemy : Character
     public AIDestinationSetter destinationSetter;
     private EnemyStatistics enemyStats;
     public Rigidbody2D rigidBody;
-    public float detectionRadious = 5f;
-    public float attackRadious = 1.5f;
+    public ParticleSystem particles;
+    //public float detectionRadious = 5f;
+    //public float attackRadious = 1.5f;
 
     private void Awake()
     {
@@ -23,7 +24,8 @@ public class Enemy : Character
 
     private void Start()
     {
-        enemyStats = new EnemyStatistics(100f, 4f, 10f, 1f, 5f, 1.5f, path);
+        float[] stats = GameManager.GetEnemyTypeByTag(this.tag).GetTypeBaseStats();
+        enemyStats = new EnemyStatistics(stats[0], stats[1], stats[2], stats[3], stats[4], stats[5], path);
         path.maxSpeed = enemyStats.GetStat(EnemyStatistics.Stat.Speed);
     }
 
@@ -63,16 +65,6 @@ public class Enemy : Character
     {
         Debug.Log("Enemy died");
     }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.black;
-        Gizmos.DrawWireSphere(transform.position, detectionRadious);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRadious);
-    }
-
-
     public bool lowHp()
     {
         return enemyStats.GetStat(EnemyStatistics.Stat.Health) < 10f;

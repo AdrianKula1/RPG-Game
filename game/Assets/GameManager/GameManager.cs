@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    private static EnemyTypes enemyTypes = new EnemyTypes();
     public static int GetLayerNumber(string layerName)
     {
         int layerNumber = 0;
@@ -31,5 +32,20 @@ public class GameManager : MonoBehaviour
         animator.Play(newState);
 
         currentState = newState;
+    }
+
+    public static EnemyType GetEnemyTypeByTag(string tag)
+    {
+        return enemyTypes.GetType(tag);
+    }
+
+    public static void PlayParticles(ParticleSystem particles)
+    {
+        particles.Play();
+    }
+
+    public static void StopParticles(ParticleSystem particles)
+    {
+        particles.Stop();
     }
 }
