@@ -6,14 +6,17 @@ using UnityEngine.UI;
 public class Bar : MonoBehaviour
 {
     public Image BarImage;
+    private float oldBarValue;
 
     private void Start()
     {
         BarImage = GetComponent<Image>();
+        oldBarValue = 1f;
     }
 
     public void UpdateBar(float currentValue, float maxValue)
     {
-        BarImage.fillAmount = Mathf.Clamp(currentValue / maxValue, 0, 1);
+        oldBarValue = Mathf.Lerp(oldBarValue, Mathf.Clamp(currentValue / maxValue, 0, 1), 0.05f);
+        BarImage.fillAmount = oldBarValue;
     }
 }
