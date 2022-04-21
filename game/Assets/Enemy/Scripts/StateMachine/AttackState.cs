@@ -44,7 +44,8 @@ public class AttackState : State
 
     private void Attack(Enemy enemy, EnemyStatistics stats)
     {
-        enemy.target.TakeDamage(stats.GetStat(EnemyStatistics.Stat.Damage));
+        Vector3 knockback =  enemy.target.transform.position - enemy.transform.position;
+        enemy.target.TakeDamage(stats.GetStat(EnemyStatistics.Stat.Damage), knockback);
         StartCoroutine(AttackCooldown(stats.GetStat(EnemyStatistics.Stat.AttackSpeed)));
         Debug.Log("Attacked Player");
     }

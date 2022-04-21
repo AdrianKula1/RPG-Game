@@ -8,6 +8,7 @@ public class Player : Character
     private bool isAlive = true;
     private PlayerStatistics PlayerStats;
     private Dictionary<Animation, string> Animations;
+    private MovementScript movement;
     public Bar HealthBar;
     public Bar ManaBar;
     public Bar StaminaBar;
@@ -68,6 +69,7 @@ public class Player : Character
         //inventory = new Inventory();
         //uiInventory.SetInventory(inventory);
         animator = GetComponent<Animator>();
+        movement = GetComponent<MovementScript>();
     }
 
 
@@ -78,15 +80,16 @@ public class Player : Character
     }
     //Otrzymywanie obra¿eñ, immunity ma dzia³aæ jak cooldown tak¿e
     //¯eby nie otrzymaæ 1000 uderzeñ w jednej sekundzie gdy przeciwnik zaatakuje
-    public override void TakeDamage(float damageValue)
+    public override void TakeDamage(float damageValue, Vector3 knockback)
     {
         float health = PlayerStats.GetValue(PlayerStatistics.Stat.Health);
         float maxHealth = PlayerStats.GetMaxValue(PlayerStatistics.Stat.Health);
 
-        if (!immunity)
+        if (!immunity && health > 0)
         {
             health -= damageValue;
             StartCoroutine(TakeDamageCooldown());
+            movement.Knockback(knockback, 2f, 0.5f);
         }
 
         if (health <= 0)

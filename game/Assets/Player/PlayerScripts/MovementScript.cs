@@ -25,6 +25,7 @@ public class MovementScript : MonoBehaviour
     private bool IsDash = false;
     private bool IsSprint = false;
     private bool DashCooldown = false;
+    private bool Knockedback = false;
     public bool CanMove = true;
     private Direction direction;
 
@@ -256,7 +257,6 @@ public class MovementScript : MonoBehaviour
     //si³y (velocity) do rigidbody gracza
     private void MoveTo()
     {
-
         if (MoveDirection != Vector3.zero)
         {
             if (IsDash)
@@ -293,7 +293,9 @@ public class MovementScript : MonoBehaviour
         }
         else
         {
-            Rigidbody.velocity = Vector3.zero;
+            if (!Knockedback)
+                Rigidbody.velocity = Vector3.zero;
+
             setIdleAnimation();
         }
     }
@@ -318,6 +320,19 @@ public class MovementScript : MonoBehaviour
             speed = 6f;
         }
 
+    }
+
+    public void Knockback(Vector3 knockback, float strength, float duration)
+    {
+        Knockedback = true;
+        Rigidbody.AddForce(knockback.normalized * strength, ForceMode2D.Impulse);
+        StartCoroutine(KnockCo(duration));
+    }
+
+    private IEnumerator KnockCo(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        Knockedback = false;
     }
 
     private void StickCamera()

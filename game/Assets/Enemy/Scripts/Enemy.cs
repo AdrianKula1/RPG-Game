@@ -50,7 +50,7 @@ public class Enemy : Character
         currentState = nextState;
     }
 
-    public override void TakeDamage(float dmgValue)
+    public override void TakeDamage(float dmgValue, Vector3 knockback)
     {
         float health = enemyStats.GetStat(EnemyStatistics.Stat.Health);
         health -= dmgValue;
@@ -73,5 +73,14 @@ public class Enemy : Character
     public EnemyStatistics GetEnemyStats()
     {
         return enemyStats;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        float[] values = new Slime().GetTypeBaseStats();
+        Gizmos.color = Color.black;
+        Gizmos.DrawWireSphere(transform.position, values[4]);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, values[5]);
     }
 }
