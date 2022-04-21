@@ -24,7 +24,7 @@ public class UI_Inventory : MonoBehaviour
     {
         int x = 0;
         int y = 0;
-        float itemSlotCellSize = 60f;
+        float itemSlotCellSize = 70f;
 
         foreach (Item item in inventory.GetItemList())
         {

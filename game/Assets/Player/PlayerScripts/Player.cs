@@ -65,8 +65,8 @@ public class Player : Character
             {Animation.DashBackward, "PlayerDashBack" },
         };
 
-        inventory = new Inventory();
-        uiInventory.SetInventory(inventory);
+        //inventory = new Inventory();
+        //uiInventory.SetInventory(inventory);
         animator = GetComponent<Animator>();
     }
 
