@@ -72,7 +72,7 @@ public class Player : Character
         movement = GetComponent<MovementScript>();
     }
 
-
+    
 
     public void SetImmunity(bool immunityCondition)
     {
@@ -80,7 +80,7 @@ public class Player : Character
     }
     //Otrzymywanie obra¿eñ, immunity ma dzia³aæ jak cooldown tak¿e
     //¯eby nie otrzymaæ 1000 uderzeñ w jednej sekundzie gdy przeciwnik zaatakuje
-    public override void TakeDamage(float damageValue, Vector3 knockback)
+    public override void TakeDamage(float damageValue, Vector3 knockback, float knockbackStrength, float knockbackDuration)
     {
         float health = PlayerStats.GetValue(PlayerStatistics.Stat.Health);
         float maxHealth = PlayerStats.GetMaxValue(PlayerStatistics.Stat.Health);
@@ -89,7 +89,7 @@ public class Player : Character
         {
             health -= damageValue;
             StartCoroutine(TakeDamageCooldown());
-            movement.Knockback(knockback, 2f, 0.5f);
+            movement.Knockback(knockback, knockbackStrength, knockbackDuration);
         }
 
         if (health <= 0)

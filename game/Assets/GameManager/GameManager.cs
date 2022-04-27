@@ -1,10 +1,52 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class GameManager : MonoBehaviour
 {
+    public static Action OnMinuteChanged;
+    public static Action OnHourChanged;
+    public static int Minute { get; private set; }
+    public static int Hour { get; private set; }
+    private float minuteToRealTime = 2f;
+    private float timer;
+
     private static EnemyTypes enemyTypes = new EnemyTypes();
+
+    private void Start()
+    {
+        Minute = 0;
+        Hour = 12;
+        timer = minuteToRealTime;
+    }
+
+    private void Update()
+    {
+        timer -= Time.deltaTime;
+
+        if (timer <= 0)
+        {
+            Minute++;
+            OnMinuteChanged?.Invoke();
+
+            if (Minute >= 60)
+            {
+                Hour++;
+                OnHourChanged?.Invoke();
+
+                Minute = 0;
+            }
+
+            if (Hour >= 24)
+            {
+                Hour = 0;
+            }
+
+            timer = minuteToRealTime;
+        }
+    }
+
     public static int GetLayerNumber(string layerName)
     {
         int layerNumber = 0;

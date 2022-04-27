@@ -25,7 +25,7 @@ public class Enemy : Character
     private void Start()
     {
         float[] stats = GameManager.GetEnemyTypeByTag(this.tag).GetTypeBaseStats();
-        enemyStats = new EnemyStatistics(stats[0], stats[1], stats[2], stats[3], stats[4], stats[5], path);
+        enemyStats = new EnemyStatistics(stats[0], stats[1], stats[2], stats[3], stats[4], stats[5], stats[6], stats[7], path);
         path.maxSpeed = enemyStats.GetStat(EnemyStatistics.Stat.Speed);
     }
 
@@ -50,7 +50,7 @@ public class Enemy : Character
         currentState = nextState;
     }
 
-    public override void TakeDamage(float dmgValue, Vector3 knockback)
+    public override void TakeDamage(float dmgValue, Vector3 knockback, float knockbackStrength, float knockbackDuration)
     {
         float health = enemyStats.GetStat(EnemyStatistics.Stat.Health);
         health -= dmgValue;

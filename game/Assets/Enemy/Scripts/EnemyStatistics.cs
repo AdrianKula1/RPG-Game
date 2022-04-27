@@ -11,13 +11,16 @@ public class EnemyStatistics
         Damage,
         AttackSpeed,
         DetectionRadious,
-        AttackRadious
+        AttackRadious,
+        KnockbackStrength,
+        KnockbackDuration
     }
 
     private AIPath path;
     private Dictionary<Stat, EnemyStatistic> Statistics;
 
-    public EnemyStatistics(float health, float speed, float damage, float attackSpeed, float detectionRadious, float attackRadious, AIPath path)
+    public EnemyStatistics(float health, float speed, float damage, float attackSpeed, float detectionRadious, float attackRadious,
+                            float knockbackStrength, float knockbackDuration, AIPath path)
     {
         Statistics = new Dictionary<Stat, EnemyStatistic>
         {
@@ -26,7 +29,9 @@ public class EnemyStatistics
             {Stat.Damage, new EnemyStatistic(damage)},
             {Stat.AttackSpeed, new EnemyStatistic(attackSpeed)},
             {Stat.DetectionRadious, new EnemyStatistic(detectionRadious)},
-            {Stat.AttackRadious, new EnemyStatistic(attackRadious)}
+            {Stat.AttackRadious, new EnemyStatistic(attackRadious)},
+            {Stat.KnockbackStrength, new EnemyStatistic(knockbackStrength)},
+            {Stat.KnockbackDuration, new EnemyStatistic(knockbackDuration)},
         };
 
         this.path = path;

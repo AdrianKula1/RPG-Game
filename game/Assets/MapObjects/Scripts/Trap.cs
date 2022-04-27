@@ -11,7 +11,7 @@ public class Trap : MonoBehaviour
             collision.gameObject.layer == GameManager.GetLayerNumber("Enemy"))
         {
             Character character = collision.GetComponent<Character>();
-            character.TakeDamage(10f, Vector3.zero);
+            character.TakeDamage(10f, Vector3.zero, 0f, 0f);
         }
 
     }
