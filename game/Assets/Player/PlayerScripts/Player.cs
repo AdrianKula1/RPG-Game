@@ -12,7 +12,7 @@ public class Player : Character
     public Bar HealthBar;
     public Bar ManaBar;
     public Bar StaminaBar;
-
+   
     public Animator animator;
     private string currentState;
 
@@ -44,6 +44,7 @@ public class Player : Character
     //Inicjuje statystyki gracza
     private void Start()
     {
+
         PlayerStats = new PlayerStatistics(100f, 100f, 100f);
 
         Animations = new Dictionary<Animation, string>
@@ -66,8 +67,8 @@ public class Player : Character
             {Animation.DashBackward, "PlayerDashBack" },
         };
 
-        //inventory = new Inventory();
-        //uiInventory.SetInventory(inventory);
+        inventory = new Inventory();
+        uiInventory.SetInventory(inventory);
         animator = GetComponent<Animator>();
         movement = GetComponent<MovementScript>();
     }
