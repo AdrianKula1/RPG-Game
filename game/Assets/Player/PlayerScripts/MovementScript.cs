@@ -10,7 +10,7 @@ public class MovementScript : MonoBehaviour
     public bool stickCamera = true; // jeœli false to kamera zwolniona i nie bedzie sie teleportowac do gracza
 
     //enumy dla kierunku
-    private enum Direction
+    public enum Direction
     {
         Forward,
         Right,
@@ -27,7 +27,7 @@ public class MovementScript : MonoBehaviour
     private bool DashCooldown = false;
     private bool Knockedback = false;
     public bool CanMove = true;
-    private Direction direction;
+    public Direction direction;
 
     //dashowe zmienne
     private float lastClickedTimeW;

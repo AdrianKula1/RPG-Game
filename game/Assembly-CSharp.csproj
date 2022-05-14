@@ -91,8 +91,11 @@
     <Compile Include="Assets\Enemy\Scripts\EnemyStatistics.cs" />
     <Compile Include="Assets\Item\ItemAssets.cs" />
     <Compile Include="Assets\Item\ItemStatistic.cs" />
+<<<<<<< Updated upstream
     <Compile Include="Assets\Item\DraggableItem.cs" />
     <Compile Include="Assets\Item\ItemSlot.cs" />
+=======
+>>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

@@ -12,6 +12,7 @@ public class Player : Character
     public Bar HealthBar;
     public Bar ManaBar;
     public Bar StaminaBar;
+    public Transform attackAnim;
    
     public Animator animator;
     private string currentState;
@@ -73,14 +74,20 @@ public class Player : Character
         movement = GetComponent<MovementScript>();
     }
 
-    
+    private void Update()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            Attack();
+        }
+    }
 
     public void SetImmunity(bool immunityCondition)
     {
         immunity = immunityCondition;
     }
-    //Otrzymywanie obra¿eñ, immunity ma dzia³aæ jak cooldown tak¿e
-    //¯eby nie otrzymaæ 1000 uderzeñ w jednej sekundzie gdy przeciwnik zaatakuje
+    //Otrzymywanie obraï¿½eï¿½, immunity ma dziaï¿½aï¿½ jak cooldown takï¿½e
+    //ï¿½eby nie otrzymaï¿½ 1000 uderzeï¿½ w jednej sekundzie gdy przeciwnik zaatakuje
     public override void TakeDamage(float damageValue, Vector3 knockback, float knockbackStrength, float knockbackDuration)
     {
         float health = PlayerStats.GetValue(PlayerStatistics.Stat.Health);
@@ -148,5 +155,53 @@ public class Player : Character
     public PlayerStatistics GetStats()
     {
         return PlayerStats;
+    }
+
+    public void Attack()
+    {
+        //animation on i po chwili off
+        SpriteRenderer animRenderer = attackAnim.GetComponent<SpriteRenderer>();
+        animRenderer.flipY = false;
+        animRenderer.flipX = false;
+        animRenderer.sortingOrder = 1;
+        GameObject ob = animRenderer.gameObject;
+        ob.SetActive(true);
+        StartCoroutine(AttackCooldown(ob));
+        if (movement.direction == MovementScript.Direction.Forward)
+        {
+            //x = -0.035 y = -0.58 rot z = -90 flip - y, order = 1
+            attackAnim.position = transform.position + new Vector3(-0.035f, -0.58f);
+            attackAnim.eulerAngles = Vector3.forward * -90;
+            animRenderer.flipY = true;
+        }
+        else if (movement.direction == MovementScript.Direction.Right)
+        {
+            //x = 0.5 y = -0.05 flip , order = 1
+            attackAnim.position = transform.position + new Vector3(0.5f, -0.05f);
+            attackAnim.rotation = new Quaternion(0, 0, 0, 0);
+        }
+        else if (movement.direction == MovementScript.Direction.Left)
+        {
+            //x = -0.5 y = -0.03 flip - x , order = 0
+            attackAnim.position = transform.position + new Vector3(-0.5f, -0.03f);
+            attackAnim.rotation = new Quaternion(0, 0, 0, 0);
+            animRenderer.flipX = true;
+            animRenderer.sortingOrder = 0;
+        }
+        else 
+        {
+            //x = 0.09 y = 0.445 rot z = 75 flip, order = 0
+            attackAnim.position = transform.position + new Vector3(0.09f, -0.445f);
+            attackAnim.rotation = new Quaternion(0, 0, 75, 0);
+            animRenderer.sortingOrder = 0;
+        }
+
+        //pobraÄ‡ wartoÅ›Ä‡ dmg i range z broni
+    }
+
+    private IEnumerator AttackCooldown(GameObject ob)
+    {
+        yield return new WaitForSeconds(0.2f);
+        ob.SetActive(false);
     }
 }
