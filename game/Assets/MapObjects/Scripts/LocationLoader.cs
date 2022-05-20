@@ -21,7 +21,7 @@ public class LocationLoader : MonoBehaviour, ILocation
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        GameObject collisionGameObject = collision.gameObject;
+        UnityEngine.GameObject collisionGameObject = collision.gameObject;
         if(collisionGameObject.name == "Player"){
             LoadLevel();
         }

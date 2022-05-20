@@ -36,7 +36,7 @@ public class MovementScript : MonoBehaviour
     private float lastClickedTimeD;
 
     //Wyeliminowanie bugu wielu postaci po za³adowaniu sceny
-    private GameObject[] players;
+    private UnityEngine.GameObject[] players;
     private void Start()
     {
         player = GetComponent<Player>();
@@ -95,7 +95,7 @@ public class MovementScript : MonoBehaviour
     //Ustawienie pozycji bohatera po za³adowaniu nowej sceny
     private void OnLevelWasLoaded(int level)
     {
-        transform.position = GameObject.FindWithTag("StartPos").transform.position;
+        transform.position = UnityEngine.GameObject.FindWithTag("StartPos").transform.position;
         m_Camera.transform.position = transform.position;
     }
 

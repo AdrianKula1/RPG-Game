@@ -9,6 +9,7 @@ public class Player : Character
     private PlayerStatistics PlayerStats;
     private Dictionary<Animation, string> Animations;
     private MovementScript movement;
+    private bool isAttacking = false;
     public Bar HealthBar;
     public Bar ManaBar;
     public Bar StaminaBar;
@@ -76,7 +77,7 @@ public class Player : Character
 
     private void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
             Attack();
         }
@@ -159,26 +160,40 @@ public class Player : Character
 
     public void Attack()
     {
-        //animation on i po chwili off
-        SpriteRenderer animRenderer = attackAnim.GetComponent<SpriteRenderer>();
+        if (!isAttacking)
+        {
+            isAttacking = true;
+            //animation on i po chwili off
+            SpriteRenderer animRenderer = attackAnim.GetComponent<SpriteRenderer>();
+            GameObject ob = animRenderer.gameObject;
+            ob.SetActive(true); 
+            AttackArea area = FlipAnimation(animRenderer);
+            area.gameObject.SetActive(true);
+            StartCoroutine(AttackCooldown(ob, area.gameObject));
+        }
+    }
+
+    private AttackArea FlipAnimation(SpriteRenderer animRenderer)
+    {
+        AttackArea direction;
         animRenderer.flipY = false;
         animRenderer.flipX = false;
-        animRenderer.sortingOrder = 1;
-        GameObject ob = animRenderer.gameObject;
-        ob.SetActive(true);
-        StartCoroutine(AttackCooldown(ob));
         if (movement.direction == MovementScript.Direction.Forward)
         {
             //x = -0.035 y = -0.58 rot z = -90 flip - y, order = 1
             attackAnim.position = transform.position + new Vector3(-0.035f, -0.58f);
             attackAnim.eulerAngles = Vector3.forward * -90;
             animRenderer.flipY = true;
+            animRenderer.sortingOrder = 2;
+            direction = transform.GetChild(3).GetComponent<AttackArea>();
         }
         else if (movement.direction == MovementScript.Direction.Right)
         {
             //x = 0.5 y = -0.05 flip , order = 1
             attackAnim.position = transform.position + new Vector3(0.5f, -0.05f);
             attackAnim.rotation = new Quaternion(0, 0, 0, 0);
+            animRenderer.sortingOrder = 2;
+            direction = transform.GetChild(1).GetComponent<AttackArea>();
         }
         else if (movement.direction == MovementScript.Direction.Left)
         {
@@ -187,21 +202,25 @@ public class Player : Character
             attackAnim.rotation = new Quaternion(0, 0, 0, 0);
             animRenderer.flipX = true;
             animRenderer.sortingOrder = 0;
+            direction = transform.GetChild(2).GetComponent<AttackArea>();
         }
-        else 
+        else
         {
             //x = 0.09 y = 0.445 rot z = 75 flip, order = 0
-            attackAnim.position = transform.position + new Vector3(0.09f, -0.445f);
-            attackAnim.rotation = new Quaternion(0, 0, 75, 0);
+            attackAnim.position = transform.position + new Vector3(0.09f, 0.445f);
+            attackAnim.eulerAngles = Vector3.forward * 75;
             animRenderer.sortingOrder = 0;
+            direction = transform.GetChild(4).GetComponent<AttackArea>();
         }
 
-        //pobrać wartość dmg i range z broni
+        return direction;
     }
 
-    private IEnumerator AttackCooldown(GameObject ob)
+    private IEnumerator AttackCooldown(GameObject ob, GameObject area)
     {
         yield return new WaitForSeconds(0.2f);
+        isAttacking = false;
         ob.SetActive(false);
+        area.SetActive(false);
     }
 }

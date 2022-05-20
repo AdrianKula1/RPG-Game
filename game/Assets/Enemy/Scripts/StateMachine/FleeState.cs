@@ -6,7 +6,7 @@ public class FleeState : State
 {
     public IdleState idleState;
     public bool isFarAway;
-    [SerializeField] private GameObject randomPos = null;
+    [SerializeField] private UnityEngine.GameObject randomPos = null;
     public override State RunCurrentState(Enemy enemy)
     {
         EnemyStatistics stats = enemy.GetEnemyStats();
@@ -38,12 +38,12 @@ public class FleeState : State
         }
     }
 
-    private GameObject FindPosition(float radious)
+    private UnityEngine.GameObject FindPosition(float radious)
     {
         float offset = radious + Random.Range(0f, 3f);  
         float randomAngle = Random.Range(0f, 359f);
         Vector3 newPosition = new Vector3(offset * Mathf.Cos(randomAngle), offset * Mathf.Sin(randomAngle));
-        GameObject temporaryObject = new GameObject("Flee position");
+        UnityEngine.GameObject temporaryObject = new UnityEngine.GameObject("Flee position");
         temporaryObject.transform.position = newPosition;
         return temporaryObject;
     }

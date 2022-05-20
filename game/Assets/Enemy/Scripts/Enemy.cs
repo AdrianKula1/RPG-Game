@@ -12,6 +12,8 @@ public class Enemy : Character
     private EnemyStatistics enemyStats;
     public Rigidbody2D rigidBody;
     public ParticleSystem particles;
+    private bool Knockedback = false;
+    private bool dmgCooldown = false;
     //public float detectionRadious = 5f;
     //public float attackRadious = 1.5f;
 
@@ -52,18 +54,47 @@ public class Enemy : Character
 
     public override void TakeDamage(float dmgValue, Vector3 knockback, float knockbackStrength, float knockbackDuration)
     {
-        float health = enemyStats.GetStat(EnemyStatistics.Stat.Health);
-        health -= dmgValue;
+        if (!dmgCooldown)
+        {
+            
+            float health = enemyStats.GetStat(EnemyStatistics.Stat.Health);
+            if (health < 0f)
+                Die();
+            else
+            {
+                health -= dmgValue;
+                Knockback(knockback, knockbackStrength, knockbackDuration);
+                dmgCooldown = true;
+                StartCoroutine(DmgCooldown());
+            }
 
-        if (health < 0f)
-            Die();
+            enemyStats.SetStat(EnemyStatistics.Stat.Health, health);
+        }
+    }
 
-        enemyStats.SetStat(EnemyStatistics.Stat.Health, health);
+    public void Knockback(Vector3 knockback, float strength, float duration)
+    {
+        Knockedback = true;
+        rigidBody.AddForce(knockback.normalized * strength, ForceMode2D.Impulse);
+        StartCoroutine(KnockCo(duration));
+    }
+
+    private IEnumerator KnockCo(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        Knockedback = false;
+    }
+
+    private IEnumerator DmgCooldown()
+    {
+        yield return new WaitForSeconds(0.3f);
+        dmgCooldown = false;
     }
 
     private void Die()
     {
         Debug.Log("Enemy died");
+        Destroy(gameObject);
     }
     public bool lowHp()
     {
