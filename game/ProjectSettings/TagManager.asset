@@ -6,6 +6,7 @@ TagManager:
   tags:
   - StartPos
   - Slime
+  - Ghost
   layers:
   - Default
   - TransparentFX

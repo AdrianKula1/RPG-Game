@@ -72,6 +72,7 @@
     <Compile Include="Assets\Enemy\Scripts\StateMachine\ChaseState.cs" />
     <Compile Include="Assets\Item\DraggableItem.cs" />
     <Compile Include="Assets\Enemy\Scripts\StateMachine\IdleState.cs" />
+    <Compile Include="Assets\AttackArea.cs" />
     <Compile Include="Assets\Enemy\Scripts\Effects\Effect.cs" />
     <Compile Include="Assets\MapObjects\Scripts\LocationLoader.cs" />
     <Compile Include="Assets\Item\UI_Inventory.cs" />
@@ -93,7 +94,8 @@
     <Compile Include="Assets\Enemy\Scripts\EnemyStatistics.cs" />
     <Compile Include="Assets\Item\ItemAssets.cs" />
     <Compile Include="Assets\Item\ItemStatistic.cs" />
-    <Compile Include="Assets\AttackArea.cs" />
+    <Compile Include="Assets\Enemy\Scripts\StateMachine\RoamState.cs" />
+    <Compile Include="Assets\Enemy\Scripts\Types\Ghost.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

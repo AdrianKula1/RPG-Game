@@ -180,6 +180,7 @@ GameObject:
   - component: {fileID: 75470800}
   - component: {fileID: 75470801}
   - component: {fileID: 75470802}
+  - component: {fileID: 75470803}
   m_Layer: 3
   m_Name: AttackBackward
   m_TagString: Untagged
@@ -208,7 +209,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 75470799}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -241,6 +242,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9c0437dea479244eb4e5a17b5c5fb06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!58 &75470803
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75470799}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.3}
+  serializedVersion: 2
+  m_Radius: 0.7
 --- !u!1 &121726688
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,6 +413,7 @@ GameObject:
   - component: {fileID: 307029014}
   - component: {fileID: 307029015}
   - component: {fileID: 307029016}
+  - component: {fileID: 307029017}
   m_Layer: 3
   m_Name: AttackRight
   m_TagString: Untagged
@@ -424,7 +442,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 307029013}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -457,6 +475,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9c0437dea479244eb4e5a17b5c5fb06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!58 &307029017
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 307029013}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.8, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.7
 --- !u!1 &448624678
 GameObject:
   m_ObjectHideFlags: 0
@@ -1679,6 +1713,7 @@ GameObject:
   - component: {fileID: 1415892505}
   - component: {fileID: 1415892506}
   - component: {fileID: 1415892507}
+  - component: {fileID: 1415892508}
   m_Layer: 3
   m_Name: AttackLeft
   m_TagString: Untagged
@@ -1707,7 +1742,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1415892504}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -1740,6 +1775,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9c0437dea479244eb4e5a17b5c5fb06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!58 &1415892508
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1415892504}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.8, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.7
 --- !u!1 &1420799464
 GameObject:
   m_ObjectHideFlags: 0
@@ -2384,6 +2435,7 @@ GameObject:
   - component: {fileID: 1731188974}
   - component: {fileID: 1731188975}
   - component: {fileID: 1731188976}
+  - component: {fileID: 1731188977}
   m_Layer: 3
   m_Name: AttackForward
   m_TagString: Untagged
@@ -2412,7 +2464,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1731188973}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -2445,6 +2497,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9c0437dea479244eb4e5a17b5c5fb06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!58 &1731188977
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1731188973}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.3}
+  serializedVersion: 2
+  m_Radius: 0.7
 --- !u!1 &1777559289
 GameObject:
   m_ObjectHideFlags: 0

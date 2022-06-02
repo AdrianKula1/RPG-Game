@@ -12,7 +12,7 @@ public class AttackArea : MonoBehaviour
         { 
             Enemy enemy = collision.gameObject.GetComponent<Enemy>();
             Vector3 knockback = enemy.transform.position - player.transform.position;
-            enemy.TakeDamage(5, knockback, 5f, 0.2f);
+            enemy.TakeDamage(5, knockback, 3f, 0.3f);
         }
         
     }

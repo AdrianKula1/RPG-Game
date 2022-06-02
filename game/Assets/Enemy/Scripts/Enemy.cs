@@ -13,7 +13,7 @@ public class Enemy : Character
     public Rigidbody2D rigidBody;
     public ParticleSystem particles;
     private bool Knockedback = false;
-    private bool dmgCooldown = false;
+    public bool dmgCooldown = false;
     //public float detectionRadious = 5f;
     //public float attackRadious = 1.5f;
 
@@ -65,6 +65,8 @@ public class Enemy : Character
                 health -= dmgValue;
                 Knockback(knockback, knockbackStrength, knockbackDuration);
                 dmgCooldown = true;
+                if (transform.CompareTag("Slime"))
+                    GameManager.ChangeAnimationState(GetComponent<Animator>(), "Slime_Idle", "Slime_TakeDamage");
                 StartCoroutine(DmgCooldown());
             }
 
@@ -77,18 +79,22 @@ public class Enemy : Character
         Knockedback = true;
         rigidBody.AddForce(knockback.normalized * strength, ForceMode2D.Impulse);
         StartCoroutine(KnockCo(duration));
+        path.canMove = false;
     }
 
     private IEnumerator KnockCo(float duration)
     {
         yield return new WaitForSeconds(duration);
         Knockedback = false;
+        path.canMove = true;
     }
 
     private IEnumerator DmgCooldown()
     {
         yield return new WaitForSeconds(0.3f);
         dmgCooldown = false;
+        if (transform.CompareTag("Slime"))
+            GameManager.ChangeAnimationState(GetComponent<Animator>(), "Slime_TakeDamage", "Slime_Idle");
     }
 
     private void Die()
@@ -113,5 +119,10 @@ public class Enemy : Character
         Gizmos.DrawWireSphere(transform.position, values[4]);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, values[5]);
+        if (transform.CompareTag("Ghost"))
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, values[4] * 2);
+        }
     }
 }

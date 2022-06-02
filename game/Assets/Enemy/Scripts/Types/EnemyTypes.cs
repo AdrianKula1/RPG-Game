@@ -10,7 +10,8 @@ public class EnemyTypes : MonoBehaviour
     {
         types = new Dictionary<string, EnemyType>
         {
-            {"Slime", new Slime() }
+            {"Slime", new Slime() },
+            {"Ghost", new Ghost() }
         };
     }
 

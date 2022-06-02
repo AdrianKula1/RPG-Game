@@ -14,7 +14,7 @@ public class FleeState : State
         isFarAway = false;
         if (randomPos == null)
         {
-            randomPos = FindPosition(stats.GetStat(EnemyStatistics.Stat.DetectionRadious));
+            randomPos = GameManager.FindPosition(stats.GetStat(EnemyStatistics.Stat.DetectionRadious));
             enemy.destinationSetter.target = randomPos.transform;
         }
 
@@ -36,15 +36,5 @@ public class FleeState : State
         {
             return this;
         }
-    }
-
-    private UnityEngine.GameObject FindPosition(float radious)
-    {
-        float offset = radious + Random.Range(0f, 3f);  
-        float randomAngle = Random.Range(0f, 359f);
-        Vector3 newPosition = new Vector3(offset * Mathf.Cos(randomAngle), offset * Mathf.Sin(randomAngle));
-        UnityEngine.GameObject temporaryObject = new UnityEngine.GameObject("Flee position");
-        temporaryObject.transform.position = newPosition;
-        return temporaryObject;
     }
 }

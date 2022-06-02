@@ -72,8 +72,6 @@ public class GameManager : MonoBehaviour
             return;
 
         animator.Play(newState);
-
-        currentState = newState;
     }
 
     public static EnemyType GetEnemyTypeByTag(string tag)
@@ -89,5 +87,15 @@ public class GameManager : MonoBehaviour
     public static void StopParticles(ParticleSystem particles)
     {
         particles.Stop();
+    }
+
+    public static GameObject FindPosition(float radious)
+    {
+        float offset = radious + UnityEngine.Random.Range(0f, 3f);
+        float randomAngle = UnityEngine.Random.Range(0f, 359f);
+        Vector3 newPosition = new Vector3(offset * Mathf.Cos(randomAngle), offset * Mathf.Sin(randomAngle));
+        UnityEngine.GameObject temporaryObject = new UnityEngine.GameObject("Flee position");
+        temporaryObject.transform.position = newPosition;
+        return temporaryObject;
     }
 }
