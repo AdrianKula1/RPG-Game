@@ -69,17 +69,36 @@ public class Player : Character
             {Animation.DashBackward, "PlayerDashBack" },
         };
 
-        inventory = new Inventory();
+        inventory = new Inventory(UseItem);
         uiInventory.SetInventory(inventory);
+        uiInventory.SetPlayer(this);
         animator = GetComponent<Animator>();
         movement = GetComponent<MovementScript>();
+        uiInventory.gameObject.SetActive(false);
     }
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Attack();
+            if (!uiInventory.gameObject.active)
+            {
+                Attack();
+            }
+            
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            if (!uiInventory.gameObject.active)
+            {
+                uiInventory.gameObject.SetActive(true);
+            }
+            else
+            {
+                uiInventory.gameObject.SetActive(false);
+            }
+
         }
     }
 
@@ -108,6 +127,25 @@ public class Player : Character
         }
 
         PlayerStats.SetValue(PlayerStatistics.Stat.Health, health);
+        HealthBar.UpdateBar(health, maxHealth);
+    }
+
+    public void Heal(float healingPoints)
+    {
+        float health = PlayerStats.GetValue(PlayerStatistics.Stat.Health);
+        health += healingPoints;
+        float maxHealth = PlayerStats.GetMaxValue(PlayerStatistics.Stat.Health);
+        //Cooldown na uyżywanie potek?
+
+        if(health >= maxHealth)
+        {
+            PlayerStats.SetValue(PlayerStatistics.Stat.Health, maxHealth);
+        }
+        else
+        {
+            PlayerStats.SetValue(PlayerStatistics.Stat.Health, health);
+        }
+        
         HealthBar.UpdateBar(health, maxHealth);
     }
 
@@ -223,4 +261,39 @@ public class Player : Character
         ob.SetActive(false);
         area.SetActive(false);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        ItemWorld itemWorld = collision.GetComponent<ItemWorld>();
+        if (itemWorld != null)
+        {
+            inventory.AddItem(itemWorld.GetItem());
+            itemWorld.DestroySelf();
+        }
+    }
+
+    private void UseItem(Item item)
+    {
+        switch (item.itemType)
+        {
+            case Item.ItemType.healthPotion:
+                Debug.Log("Item used");
+                Debug.Log("Life before: " + PlayerStats.GetValue(PlayerStatistics.Stat.Health));
+                Heal(20);
+                Debug.Log("Life after: " + PlayerStats.GetValue(PlayerStatistics.Stat.Health));
+                inventory.RemoveItem(new Item { itemType = Item.ItemType.healthPotion, amount=1});
+                break;
+
+            case Item.ItemType.manaPotion:
+                Debug.Log("Item used");
+                inventory.RemoveItem(new Item { itemType = Item.ItemType.manaPotion, amount = 1 });
+                break;
+        }
+    }
+
+    public Vector3 GetPosition()
+    {
+        return this.transform.position;
+    }
+    
 }

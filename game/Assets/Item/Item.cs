@@ -1,11 +1,12 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+[Serializable]
 public class Item
 {
-    public enum itemType 
+    public enum ItemType 
     { 
         weapon,
         armor,
@@ -18,7 +19,7 @@ public class Item
     public string discription;
     public int capacity;
     public List<ItemStatistic> stat;
-    public itemType ItemType;
+    public ItemType itemType;
     public int amount;
 
     public string GetName()
@@ -40,13 +41,29 @@ public class Item
 
     public Sprite GetSprite()
     {
-        switch (ItemType)
+        switch (itemType)
         {
             default:
-            case itemType.weapon:           return ItemAssets.Instance.weaponSprite;
-            case itemType.armor:            return ItemAssets.Instance.armorSprite;
-            case itemType.healthPotion:     return ItemAssets.Instance.healthPotionSprite;
-            case itemType.manaPotion:       return ItemAssets.Instance.manaPotionSprite;
+            case ItemType.weapon:           return ItemAssets.Instance.weaponSprite;
+            case ItemType.armor:            return ItemAssets.Instance.armorSprite;
+            case ItemType.healthPotion:     return ItemAssets.Instance.healthPotionSprite;
+            case ItemType.manaPotion:       return ItemAssets.Instance.manaPotionSprite;
+        }
+    }
+    public bool IsStackable()
+    {
+        switch (itemType)
+        {
+            default:
+            case ItemType.healthPotion:
+            case ItemType.manaPotion:      
+                return true;
+            case ItemType.weapon:
+            case ItemType.armor:
+                return false;
         }
     }
 }
+
+
+
