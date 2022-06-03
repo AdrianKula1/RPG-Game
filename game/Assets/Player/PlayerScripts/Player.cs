@@ -100,6 +100,10 @@ public class Player : Character
             }
 
         }
+        HealthBar.UpdateBar(PlayerStats.GetValue(PlayerStatistics.Stat.Health), PlayerStats.GetMaxValue(PlayerStatistics.Stat.Health));
+        HealthBar.UpdateBar(PlayerStats.GetValue(PlayerStatistics.Stat.Mana), PlayerStats.GetMaxValue(PlayerStatistics.Stat.Mana));
+        StaminaBar.UpdateBar(PlayerStats.GetValue(PlayerStatistics.Stat.Stamina), PlayerStats.GetMaxValue(PlayerStatistics.Stat.Stamina));
+
     }
 
     public void SetImmunity(bool immunityCondition)
@@ -127,7 +131,7 @@ public class Player : Character
         }
 
         PlayerStats.SetValue(PlayerStatistics.Stat.Health, health);
-        HealthBar.UpdateBar(health, maxHealth);
+
     }
 
     public void Heal(float healingPoints)
@@ -145,9 +149,12 @@ public class Player : Character
         {
             PlayerStats.SetValue(PlayerStatistics.Stat.Health, health);
         }
+
         
-        HealthBar.UpdateBar(health, maxHealth);
+
+
     }
+
 
     public void ChangeStamina(float value)
     {
@@ -156,7 +163,6 @@ public class Player : Character
 
         stamina += value;
         PlayerStats.SetValue(PlayerStatistics.Stat.Stamina, stamina);
-        StaminaBar.UpdateBar(stamina, maxStamina);
     }
 
     private void Die()
@@ -260,7 +266,7 @@ public class Player : Character
         isAttacking = false;
         ob.SetActive(false);
         area.SetActive(false);
-    }
+    }   
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

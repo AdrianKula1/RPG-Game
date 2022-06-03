@@ -18,5 +18,8 @@ public class Bar : MonoBehaviour
     {
         oldBarValue = Mathf.Lerp(oldBarValue, Mathf.Clamp(currentValue / maxValue, 0, 1), 0.05f);
         BarImage.fillAmount = oldBarValue;
+        
     }
+
+
 }
