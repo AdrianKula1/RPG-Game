@@ -20,6 +20,8 @@ public class Player : Character
 
     private Inventory inventory;
     [SerializeField] private UI_Inventory uiInventory;
+    // tymczasowe rozwiązanie kappa
+    [SerializeField] private Canvas npcCanvas;
 
 
     //Animacje
@@ -275,6 +277,12 @@ public class Player : Character
             inventory.AddItem(itemWorld.GetItem());
             itemWorld.DestroySelf();
         }
+        Debug.Log("Pies");
+        if (collision.gameObject.layer==LayerMask.NameToLayer("NPC"))
+        {
+            //GameObject.setActive(npcCanvas.gameObject);
+            npcCanvas.gameObject.SetActive(true);
+        }
     }
 
     private void UseItem(Item item)
@@ -300,5 +308,5 @@ public class Player : Character
     {
         return this.transform.position;
     }
-    
+
 }
