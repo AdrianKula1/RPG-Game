@@ -35,6 +35,7 @@ public class Enemy : Character
     {
         path.maxSpeed = enemyStats.GetStat(EnemyStatistics.Stat.Speed);
         RunStateMachine();
+        MovingDirectionAnimation();
     }
 
     private void RunStateMachine()
@@ -65,8 +66,12 @@ public class Enemy : Character
                 health -= dmgValue;
                 Knockback(knockback, knockbackStrength, knockbackDuration);
                 dmgCooldown = true;
+
                 if (transform.CompareTag("Slime"))
                     GameManager.ChangeAnimationState(GetComponent<Animator>(), "Slime_Idle", "Slime_TakeDamage");
+                else if(transform.CompareTag("Ghost"))
+                    GameManager.ChangeAnimationState(GetComponent<Animator>(), "Ghost_Idle", "Ghost_TakeDamage");
+
                 StartCoroutine(DmgCooldown());
             }
 
@@ -85,6 +90,7 @@ public class Enemy : Character
     private IEnumerator KnockCo(float duration)
     {
         yield return new WaitForSeconds(duration);
+        rigidBody.velocity = Vector2.zero;
         Knockedback = false;
         path.canMove = true;
     }
@@ -95,6 +101,8 @@ public class Enemy : Character
         dmgCooldown = false;
         if (transform.CompareTag("Slime"))
             GameManager.ChangeAnimationState(GetComponent<Animator>(), "Slime_TakeDamage", "Slime_Idle");
+        else if (transform.CompareTag("Ghost"))
+            GameManager.ChangeAnimationState(GetComponent<Animator>(), "Ghost_TakeDamage", "Ghost_Idle");
     }
 
     private void Die()
@@ -123,6 +131,57 @@ public class Enemy : Character
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position, values[4] * 2);
+        }
+    }
+
+    public void MovingDirectionAnimation()
+    {
+        if (!dmgCooldown)
+        {
+            float velX = path.velocity.x;
+            float velY = path.velocity.y;
+            SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+            renderer.flipX = false;
+            renderer.flipY = false;
+            Animator anim = GetComponent<Animator>();
+            Debug.Log("velx = "+velX.ToString()+", vely = " + velY.ToString());
+            if (velX == 0 && velY == 0)
+            {
+                if (this.CompareTag("Ghost"))
+                {
+                    GameManager.ChangeAnimationState(anim, "", "Ghost_Idle");
+                }
+            }
+            else
+            {
+                if (Mathf.Abs(velX) > Mathf.Abs(velY))
+                {
+
+                    if (this.CompareTag("Ghost"))
+                    {
+                        GameManager.ChangeAnimationState(anim, "Ghost_Idle", "Ghost_MoveHorizontal");
+                        if (velX < 0)
+                        {
+                            renderer.flipX = true;
+                        }
+                    }
+                }
+                else
+                {
+                    if (this.CompareTag("Ghost"))
+                    {
+
+                        if (velY > 0)
+                        {
+                            GameManager.ChangeAnimationState(anim, "Ghost_Idle", "Ghost_MoveBackward");
+                        }
+                        else
+                        {
+                            GameManager.ChangeAnimationState(anim, "Ghost_MoveBackward", "Ghost_Idle");
+                        }
+                    }
+                }
+            }
         }
     }
 }
