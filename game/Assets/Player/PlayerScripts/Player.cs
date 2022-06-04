@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : Character
 {
-    private bool immunity = false;
+    public bool immunity = false;
     private bool isAlive = true;
     private PlayerStatistics PlayerStats;
     private Dictionary<Animation, string> Animations;
@@ -42,7 +42,8 @@ public class Player : Character
         DashForward,
         DashLeft,
         DashRight,
-        DashBackward
+        DashBackward,
+        TakeDamage
     }
 
     //Inicjuje statystyki gracza
@@ -69,6 +70,7 @@ public class Player : Character
             {Animation.DashRight, "PlayerDashRight" },
             {Animation.DashLeft, "PlayerDashLeft" },
             {Animation.DashBackward, "PlayerDashBack" },
+            {Animation.TakeDamage, "Player_TakeDamage" },
         };
 
         inventory = new Inventory(UseItem);
@@ -112,8 +114,7 @@ public class Player : Character
     {
         immunity = immunityCondition;
     }
-    //Otrzymywanie obra�e�, immunity ma dzia�a� jak cooldown tak�e
-    //�eby nie otrzyma� 1000 uderze� w jednej sekundzie gdy przeciwnik zaatakuje
+
     public override void TakeDamage(float damageValue, Vector3 knockback, float knockbackStrength, float knockbackDuration)
     {
         float health = PlayerStats.GetValue(PlayerStatistics.Stat.Health);
@@ -123,6 +124,7 @@ public class Player : Character
         {
             health -= damageValue;
             StartCoroutine(TakeDamageCooldown());
+            ChangeAnimationState(getAnimationName(Animation.TakeDamage));
             movement.Knockback(knockback, knockbackStrength, knockbackDuration);
         }
 
@@ -151,10 +153,6 @@ public class Player : Character
         {
             PlayerStats.SetValue(PlayerStatistics.Stat.Health, health);
         }
-
-        
-
-
     }
 
 
@@ -180,7 +178,8 @@ public class Player : Character
     public IEnumerator TakeDamageCooldown()
     {
         immunity = true;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.3f);
+        ChangeAnimationState(getAnimationName(Animation.IdleFront));
         immunity = false;
     }
 
