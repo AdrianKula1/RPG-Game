@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Main.unity
+    path: Assets/Backup/Main.unity
     guid: cddedf6a502889442a60e4db5f20c3fc
   - enabled: 1
     path: Assets/Scenes/GoblinCave.unity
