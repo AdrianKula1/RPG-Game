@@ -101,7 +101,7 @@ public class Player : Character
 
         }
         HealthBar.UpdateBar(PlayerStats.GetValue(PlayerStatistics.Stat.Health), PlayerStats.GetMaxValue(PlayerStatistics.Stat.Health));
-        HealthBar.UpdateBar(PlayerStats.GetValue(PlayerStatistics.Stat.Mana), PlayerStats.GetMaxValue(PlayerStatistics.Stat.Mana));
+        //HealthBar.UpdateBar(PlayerStats.GetValue(PlayerStatistics.Stat.Mana), PlayerStats.GetMaxValue(PlayerStatistics.Stat.Mana));
         StaminaBar.UpdateBar(PlayerStats.GetValue(PlayerStatistics.Stat.Stamina), PlayerStats.GetMaxValue(PlayerStatistics.Stat.Stamina));
 
     }
