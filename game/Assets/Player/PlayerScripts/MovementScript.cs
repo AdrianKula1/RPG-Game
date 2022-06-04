@@ -296,7 +296,8 @@ public class MovementScript : MonoBehaviour
             if (!Knockedback)
                 Rigidbody.velocity = Vector3.zero;
 
-            setIdleAnimation();
+            if(!player.immunity)
+                setIdleAnimation();
         }
     }
 
