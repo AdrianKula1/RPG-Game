@@ -11,7 +11,8 @@ public class EnemyTypes : MonoBehaviour
         types = new Dictionary<string, EnemyType>
         {
             {"Slime", new Slime() },
-            {"Ghost", new Ghost() }
+            {"Ghost", new Ghost() },
+            {"LavaSlime", new LavaSlime() }
         };
     }
 

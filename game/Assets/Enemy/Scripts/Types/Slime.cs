@@ -11,6 +11,12 @@ public class Slime : EnemyType
         return baseStats;
     }
 
+    public override string[] GetTypeAnimationNames()
+    {
+        string[] animations = { "Slime_Idle", "Slime_TakeDamage" };
+        return animations;
+    }
+
     public Slime()
     {
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
-public class EnemyStatistics
+public class EnemyStatistics : MonoBehaviour
 {
     public enum Stat
     {
@@ -35,6 +35,7 @@ public class EnemyStatistics
         };
 
         this.path = path;
+        path.maxSpeed = speed;
     }
 
     public float GetStat(Stat statType)

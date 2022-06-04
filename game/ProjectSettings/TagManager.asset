@@ -7,6 +7,8 @@ TagManager:
   - StartPos
   - Slime
   - Ghost
+  - LavaSlime
+  - MudSlime
   layers:
   - Default
   - TransparentFX

@@ -10,6 +10,8 @@ public class Enemy : Character
     public AIPath path;
     public AIDestinationSetter destinationSetter;
     private EnemyStatistics enemyStats;
+    private EnemyAnimations enemyAnims;
+    private Animator animator;
     public Rigidbody2D rigidBody;
     public ParticleSystem particles;
     private bool Knockedback = false;
@@ -28,7 +30,9 @@ public class Enemy : Character
     {
         float[] stats = GameManager.GetEnemyTypeByTag(this.tag).GetTypeBaseStats();
         enemyStats = new EnemyStatistics(stats[0], stats[1], stats[2], stats[3], stats[4], stats[5], stats[6], stats[7], path);
+        enemyAnims = new EnemyAnimations(tag);
         path.maxSpeed = enemyStats.GetStat(EnemyStatistics.Stat.Speed);
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -66,12 +70,7 @@ public class Enemy : Character
                 health -= dmgValue;
                 Knockback(knockback, knockbackStrength, knockbackDuration);
                 dmgCooldown = true;
-
-                if (transform.CompareTag("Slime"))
-                    GameManager.ChangeAnimationState(GetComponent<Animator>(), "Slime_Idle", "Slime_TakeDamage");
-                else if(transform.CompareTag("Ghost"))
-                    GameManager.ChangeAnimationState(GetComponent<Animator>(), "Ghost_Idle", "Ghost_TakeDamage");
-
+                animator.Play(enemyAnims.GetAnimation(EnemyAnimations.Animation.TakeDamage));
                 StartCoroutine(DmgCooldown());
             }
 
@@ -99,10 +98,7 @@ public class Enemy : Character
     {
         yield return new WaitForSeconds(0.3f);
         dmgCooldown = false;
-        if (transform.CompareTag("Slime"))
-            GameManager.ChangeAnimationState(GetComponent<Animator>(), "Slime_TakeDamage", "Slime_Idle");
-        else if (transform.CompareTag("Ghost"))
-            GameManager.ChangeAnimationState(GetComponent<Animator>(), "Ghost_TakeDamage", "Ghost_Idle");
+        animator.Play(enemyAnims.GetAnimation(EnemyAnimations.Animation.Idle));
     }
 
     private void Die()
@@ -122,7 +118,16 @@ public class Enemy : Character
 
     private void OnDrawGizmosSelected()
     {
-        float[] values = new Slime().GetTypeBaseStats();
+        float[] values = { };
+        if (transform.CompareTag("Slime"))
+            values = new Slime().GetTypeBaseStats();
+        else if (transform.CompareTag("Ghost"))
+            values = new Ghost().GetTypeBaseStats();
+        else if (transform.CompareTag("LavaSlime"))
+            values = new LavaSlime().GetTypeBaseStats();
+        else if (transform.CompareTag("MudSlime"))
+            values = new MudSlime().GetTypeBaseStats();
+
         Gizmos.color = Color.black;
         Gizmos.DrawWireSphere(transform.position, values[4]);
         Gizmos.color = Color.red;
@@ -143,13 +148,11 @@ public class Enemy : Character
             SpriteRenderer renderer = GetComponent<SpriteRenderer>();
             renderer.flipX = false;
             renderer.flipY = false;
-            Animator anim = GetComponent<Animator>();
-            Debug.Log("velx = "+velX.ToString()+", vely = " + velY.ToString());
             if (velX == 0 && velY == 0)
             {
                 if (this.CompareTag("Ghost"))
                 {
-                    GameManager.ChangeAnimationState(anim, "", "Ghost_Idle");
+                    animator.Play(enemyAnims.GetAnimation(EnemyAnimations.Animation.Idle));
                 }
             }
             else
@@ -159,7 +162,7 @@ public class Enemy : Character
 
                     if (this.CompareTag("Ghost"))
                     {
-                        GameManager.ChangeAnimationState(anim, "Ghost_Idle", "Ghost_MoveHorizontal");
+                        animator.Play(enemyAnims.GetAnimation(EnemyAnimations.Animation.MoveRight));
                         if (velX < 0)
                         {
                             renderer.flipX = true;
@@ -173,11 +176,11 @@ public class Enemy : Character
 
                         if (velY > 0)
                         {
-                            GameManager.ChangeAnimationState(anim, "Ghost_Idle", "Ghost_MoveBackward");
+                            animator.Play(enemyAnims.GetAnimation(EnemyAnimations.Animation.MoveBackward));
                         }
                         else
                         {
-                            GameManager.ChangeAnimationState(anim, "Ghost_MoveBackward", "Ghost_Idle");
+                            animator.Play(enemyAnims.GetAnimation(EnemyAnimations.Animation.Idle));
                         }
                     }
                 }
