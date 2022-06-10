@@ -11,6 +11,7 @@ public class IdleState : State
     public bool canSeePlayer;
     public override State RunCurrentState(Enemy enemy)
     {
+        canSeePlayer = false;
         if (enemy.CompareTag("Ghost"))
         {
             canSeePlayer = CanSeePlayer(enemy, enemy.GetEnemyStats().GetStat(EnemyStatistics.Stat.DetectionRadious) * 2);
@@ -53,12 +54,11 @@ public class IdleState : State
             if (colliders[i].gameObject.layer == GameManager.GetLayerNumber("Player"))
             {
 
-                enemy.target = colliders[i].gameObject.transform.GetComponent<Player>();
-                if (enemy.target.IsPlayerAlive())
-                    return true;
+                enemy.target = colliders[i].gameObject.GetComponent<Player>();
+                return true;
             }
         }
-
+        enemy.target = null;
         return false;
     }
 }

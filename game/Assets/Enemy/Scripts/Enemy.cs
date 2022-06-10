@@ -127,6 +127,8 @@ public class Enemy : Character
             values = new LavaSlime().GetTypeBaseStats();
         else if (transform.CompareTag("MudSlime"))
             values = new MudSlime().GetTypeBaseStats();
+        else if (transform.CompareTag("VoidSlime"))
+            values = new VoidSlime().GetTypeBaseStats();
 
         Gizmos.color = Color.black;
         Gizmos.DrawWireSphere(transform.position, values[4]);

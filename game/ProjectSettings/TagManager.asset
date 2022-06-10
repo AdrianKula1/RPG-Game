@@ -9,6 +9,7 @@ TagManager:
   - Ghost
   - LavaSlime
   - MudSlime
+  - VoidSlime
   layers:
   - Default
   - TransparentFX

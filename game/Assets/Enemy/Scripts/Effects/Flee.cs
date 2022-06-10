@@ -10,6 +10,11 @@ public class Flee : Effect
         return true;
     }
 
+    public override bool SetEffectOnPlayer(Dictionary<PlayerStatistics.Stat, PlayerStatistic> dict)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public Flee()
     { }
 }

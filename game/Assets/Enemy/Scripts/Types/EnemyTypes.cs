@@ -12,7 +12,9 @@ public class EnemyTypes : MonoBehaviour
         {
             {"Slime", new Slime() },
             {"Ghost", new Ghost() },
-            {"LavaSlime", new LavaSlime() }
+            {"LavaSlime", new LavaSlime() },
+            {"MudSlime", new MudSlime() },
+            {"VoidSlime", new VoidSlime() }
         };
     }
 

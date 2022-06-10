@@ -14,6 +14,20 @@ public class Standard : Effect
         return true;
     }
 
+    public override bool SetEffectOnPlayer(Dictionary<PlayerStatistics.Stat, PlayerStatistic> dict)
+    {
+        foreach (KeyValuePair<PlayerStatistics.Stat, PlayerStatistic> entry in dict)
+        {
+            if (entry.Key != PlayerStatistics.Stat.Health && entry.Key != PlayerStatistics.Stat.Mana && entry.Key != PlayerStatistics.Stat.Stamina)
+            {
+                LevelStatistic statistic = (LevelStatistic)entry.Value;
+                statistic.SetModifier(1f);
+            }
+        }
+
+        return true;
+    }
+
     public Standard()
     { }
 }

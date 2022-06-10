@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
-public class EnemyStatistics : MonoBehaviour
+public class EnemyStatistics
 {
     public enum Stat
     {

@@ -1842,6 +1842,7 @@ MonoBehaviour:
   attackAnim: {fileID: 1523896950}
   animator: {fileID: 1179631121}
   uiInventory: {fileID: 448624680}
+  npcCanvas: {fileID: 0}
 --- !u!50 &1179631123
 Rigidbody2D:
   serializedVersion: 4
@@ -2308,7 +2309,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!61 &1368302059

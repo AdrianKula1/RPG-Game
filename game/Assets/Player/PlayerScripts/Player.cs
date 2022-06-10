@@ -277,7 +277,7 @@ public class Player : Character
             inventory.AddItem(itemWorld.GetItem());
             itemWorld.DestroySelf();
         }
-        Debug.Log("Pies");
+        //Debug.Log("Pies");
         if (collision.gameObject.layer==LayerMask.NameToLayer("NPC"))
         {
             //GameObject.setActive(npcCanvas.gameObject);

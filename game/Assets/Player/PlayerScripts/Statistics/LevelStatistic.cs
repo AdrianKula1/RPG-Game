@@ -5,10 +5,13 @@ using UnityEngine;
 public class LevelStatistic : PlayerStatistic
 {
     private int Level;
-
-    public LevelStatistic(int level)
+    private float TotalValue;
+    private float Modifier;
+    public LevelStatistic(int level, float totalValue)
     {
         Level = level;
+        TotalValue = totalValue;
+        Modifier = 1f;
     }
 
     public override int GetLevel()
@@ -19,5 +22,20 @@ public class LevelStatistic : PlayerStatistic
     public override void LevelUp()
     {
         Level++;
+    }
+
+    public void SetTotalValue(float newValue)
+    {
+        TotalValue = newValue;
+    }
+
+    public float GetTotalValue()
+    {
+        return TotalValue * Modifier;
+    }
+
+    public void SetModifier(float modifierValue)
+    {
+        Modifier = modifierValue;
     }
 }

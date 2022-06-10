@@ -8,7 +8,11 @@ public class PlayerStatistics
     {
         Health,
         Stamina,
-        Mana
+        Mana,
+        TotalSpeed,
+        TotalStrength,
+        TotalAgility,
+        TotalDefense
     }
 
     private Dictionary<Stat, PlayerStatistic> Statistics;
@@ -19,7 +23,8 @@ public class PlayerStatistics
         {
             { Stat.Health, new BarStatistic(health) },
             { Stat.Mana, new BarStatistic(mana) },
-            { Stat.Stamina, new BarStatistic(stamina) }
+            { Stat.Stamina, new BarStatistic(stamina) },
+            { Stat.TotalSpeed, new  LevelStatistic(1, 5f)}
         };
     }
 
@@ -42,7 +47,8 @@ public class PlayerStatistics
         }
         else
         {
-            return -1f;
+            LevelStatistic statistic = (LevelStatistic)Statistics[statType];
+            return statistic.GetTotalValue();
         }
     }
 
@@ -62,5 +68,10 @@ public class PlayerStatistics
     public int GetLevel(Stat statType)
     {
         return Statistics[statType].GetLevel();
+    }
+
+    public void ApplyEffect(Effect effect)
+    {
+        effect.SetEffectOnPlayer(Statistics);
     }
 }

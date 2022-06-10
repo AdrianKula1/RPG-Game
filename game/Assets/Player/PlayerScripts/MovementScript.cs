@@ -313,12 +313,12 @@ public class MovementScript : MonoBehaviour
         }
         else if (sprint && stamina >= 0)
         {
-            speed = 12f;
+            speed = player.GetStats().GetValue(PlayerStatistics.Stat.TotalSpeed) * 2;
             IsSprint = true;
         }
         else
         {
-            speed = 6f;
+            speed = player.GetStats().GetValue(PlayerStatistics.Stat.TotalSpeed);
         }
 
     }
